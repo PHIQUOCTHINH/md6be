@@ -9,5 +9,4 @@ import org.springframework.stereotype.Service;
 public class MerchantService implements IMerchantService {
     @Autowired
     IMerchantRepository merchantRepository;
-
 }
