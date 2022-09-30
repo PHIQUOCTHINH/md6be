@@ -1,6 +1,6 @@
 package com.example.md6be.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 import javax.persistence.*;
@@ -26,14 +26,13 @@ public class AppUser {
     @Size(max = 50)
     @Email
     private String username;
-    @JsonIgnore
+
     @NotBlank
     @Size(min = 4, max = 20)
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable (name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn (name = "role_id"))
-    Set<Role> roles = new HashSet<>();
-
+    Set<Role> roles;
 
 }
