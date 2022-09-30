@@ -8,4 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin("*")
 @RequestMapping("/api/home")
 public class HomeController {
+
+
 }
