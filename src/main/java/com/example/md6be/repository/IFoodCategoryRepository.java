@@ -13,6 +13,7 @@ public interface IFoodCategoryRepository extends JpaRepository<FoodCategory,Long
     @Query(nativeQuery = true, value = "SELECT * FROM md6_case.food_categories;")
     List<FoodCategory> getAllCategory();
 
+
     FoodCategory findFoodCategoryById(Long id);
     List<FoodCategory> findAll();
 }

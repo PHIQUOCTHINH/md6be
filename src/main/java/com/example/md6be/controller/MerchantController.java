@@ -18,6 +18,8 @@ import java.util.Optional;
 @CrossOrigin("*")
 @RequestMapping("/api/merchant")
 public class MerchantController {
+
+
     @Autowired
     FoodService foodService;
     @Autowired
