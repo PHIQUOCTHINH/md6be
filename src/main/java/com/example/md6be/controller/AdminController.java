@@ -45,7 +45,7 @@ public class AdminController {
         Merchant newMerchant = merchant.get();
         newMerchant.setIsAccept(true);
         merchantService.save(newMerchant);
-//        sendMailController.sendEmail(newMerchant.getAppUser());
+        sendMailController.sendEmail(newMerchant.getAppUser());
         return new ResponseEntity<>(newMerchant,HttpStatus.CREATED) ;
     }
     // xoa 1 merchant( co the ko dung)
@@ -77,6 +77,7 @@ public class AdminController {
             activeBan.setIsActive(true);
         }
         merchantService.save(activeBan);
+        sendMailController.sendEmailBan(merchant.get());
         return new ResponseEntity<>(activeBan,HttpStatus.OK);
     }
     // sắp xếp tên merchant theo thứ tự
@@ -104,6 +105,7 @@ public class AdminController {
         Customer newCustomer = customer.get();
         newCustomer.setIsAccept(true);
         customerService.save(newCustomer);
+        sendMailController.sendEmailC(customer.get().getAppUser());
         return new ResponseEntity<>(newCustomer,HttpStatus.CREATED) ;
     }
     // hiển thị list customer đang đợi accept
@@ -132,6 +134,7 @@ public class AdminController {
             activeBan.setIsActive(true);
         }
         customerService.save(activeBan);
+        sendMailController.sendEmailBanCustomer(customer.get());
         return new ResponseEntity<>(activeBan,HttpStatus.OK);
     }
     // tìm tài khoản customer theo id
