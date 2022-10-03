@@ -17,6 +17,10 @@ public class Customer {
     private String avatar;
     @NotBlank
     private String phoneNumber;
+
+    @NotBlank
+    private String address;
+
     @OneToOne
     @JoinColumn(name = "user_id")
     private AppUser appUser;

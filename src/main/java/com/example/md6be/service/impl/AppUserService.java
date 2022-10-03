@@ -32,6 +32,16 @@ public class AppUserService implements IAppUserService {
 
     @Override
     public AppUser findAppUserByPasswordAndUsername(String pass, String username) {
-        return appUserRepository.findAppUserByPasswordAndUsername(pass,username);
+        return appUserRepository.findByPasswordAndUsername(pass,username);
+    }
+
+    @Override
+    public AppUser findAppUserByPassword(String pass) {
+        return appUserRepository.findByPassword(pass);
+    }
+
+    @Override
+    public void save(AppUser appUser) {
+        appUserRepository.save(appUser);
     }
 }

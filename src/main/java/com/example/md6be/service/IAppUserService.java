@@ -12,5 +12,7 @@ public interface IAppUserService {
     List<AppUser> findAll();
 
     AppUser findAppUserByPasswordAndUsername(String password, String username);
+    AppUser findAppUserByPassword(String pass);
+    void save(AppUser appUser);
 
 }
