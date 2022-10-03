@@ -64,11 +64,18 @@ public class MerchantController {
     public ResponseEntity<List<FoodCategory>> findAllCategory() {
         return new ResponseEntity<>(foodCategoryService.findAll(), HttpStatus.OK);
     }
-
     @GetMapping("/category/{id}")
     public ResponseEntity<FoodCategory> findOneCategory(@PathVariable Long id) {
         Optional<FoodCategory> category = foodCategoryService.findById(id);
         return category.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+    @GetMapping("/search/{name}")
+    public ResponseEntity<List<Food>> findByName(@PathVariable("name") String name) {
+        List<Food> foods = foodService.findBySearch(name);
+        if (foods.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(foods);
     }
 }

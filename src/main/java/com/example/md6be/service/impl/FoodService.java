@@ -35,7 +35,12 @@ public class FoodService implements IFoodService {
     }
 
     @Override
-    public List<Food> findAll() {
-        return foodRepository.findAll();
+    public List<Food> findAll() {return foodRepository.findAll();
+    }
+    @Override
+    public List<Food> findBySearch(String f) {
+        return foodRepository.findFood("%" + f + "%");
+
     }
 }
+

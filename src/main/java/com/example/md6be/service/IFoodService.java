@@ -12,4 +12,5 @@ public interface IFoodService {
     void delete(Long id);
 
     List<Food> findAll();
+    List<Food> findBySearch(String f);
 }
