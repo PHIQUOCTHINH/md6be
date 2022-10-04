@@ -13,5 +13,6 @@ public interface IFoodService {
     void delete(Long id);
 
     List<Food> findAll();
-    List<Food> findFoodsByMerchantId(Long id);
+    List<Food> findFoodsByUserId(Long id);
+    List<Food> findFood( String f);
 }

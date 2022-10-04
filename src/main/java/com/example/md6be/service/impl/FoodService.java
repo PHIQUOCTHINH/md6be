@@ -37,8 +37,13 @@ public class FoodService implements IFoodService {
     }
 
     @Override
-    public List<Food> findFoodsByMerchantId(Long id) {
-        return foodRepository.findFoodsByMerchantId(id);
+    public List<Food> findFoodsByUserId(Long id) {
+        return foodRepository.findFoodsByUserId(id);
+    }
+
+    @Override
+    public List<Food> findFood(String f) {
+        return foodRepository.findFood("%" + f + "%");
     }
 
     public List<Food> findFoodByMerchant(Merchant merchant) {

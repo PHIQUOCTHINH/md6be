@@ -2,11 +2,9 @@ package com.example.md6be.service;
 
 import com.example.md6be.model.Merchant;
 import com.example.md6be.model.Order;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 
-import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 public interface IOrderService {
     List<Order> findOrderByMerchant(Merchant merchant);
@@ -19,12 +17,12 @@ public interface IOrderService {
 
     List<Order> findOrderConfirmedByMerchantId(long id);
 
-    Order findOrderById(Long id);
+    Optional<Order> findOrderById(Long id);
 
     void confirmOrder(Long idOrder);
 
 
-    List<Order> findOrdersByCustomerId (Long idCustomer);
+//    List<Order> findOrdersByCustomerId (Long id);
 
     List<Order> findOrderByCustomerId(Long id);
 
@@ -38,4 +36,7 @@ public interface IOrderService {
 
 
     List<Order> findOrdersConfirmedDateDESC(int id);
+    List<Order> findOrdersByUserId ( Long id);
+    void delete(long id);
+
 }

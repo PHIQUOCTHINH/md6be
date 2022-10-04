@@ -9,22 +9,22 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ICustomerService {
-    Customer findCustomerByAppUser_Username (String userName);
+    public void save(Customer customer);
 
-    List<Customer> findAll();
+    public Customer findCustomerByUserName(String userName);
+    public List<Customer> getAllCustomers();
 
-    Optional<Customer> findCustomerById(Long id);
+    public Optional<Customer> findCustomerById(Long id) ;
 
+    public Customer saveCustomer(Customer customer) ;
 
-    List<Customer> findInActiveCustomer();
+    public List<Customer> findInActiveCustomer() ;
 
+    public List<Customer> findActiveCustomer() ;
 
-    List<Customer> findActiveCustomer();
-
-
-    Customer findCustomerByAppUser(AppUser appUser);
-    Customer save(Customer customer);
-
+    public  Customer findCustomerByAppUser(AppUser appUser);
     List<Customer> getWaitingAcceptCustomer();
+    List<Customer> findAll();
     List<Customer> findCustomerByIsAccept(Boolean isAccept);
+
 }

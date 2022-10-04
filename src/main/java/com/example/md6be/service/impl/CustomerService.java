@@ -18,18 +18,28 @@ public class CustomerService implements ICustomerService {
     ICustomerRepository customerRepository;
 
     @Override
-    public Customer findCustomerByAppUser_Username(String userName) {
+    public void save(Customer customer) {
+        customerRepository.save(customer);
+    }
+
+    @Override
+    public Customer findCustomerByUserName(String userName) {
         return customerRepository.findCustomerByAppUser_Username(userName);
     }
 
     @Override
-    public List<Customer> findAll() {
+    public List<Customer> getAllCustomers() {
         return customerRepository.findAll();
     }
 
     @Override
     public Optional<Customer> findCustomerById(Long id) {
         return customerRepository.findById(id);
+    }
+
+    @Override
+    public Customer saveCustomer(Customer customer) {
+        return customerRepository.save(customer);
     }
 
     @Override
@@ -46,15 +56,14 @@ public class CustomerService implements ICustomerService {
     public Customer findCustomerByAppUser(AppUser appUser) {
         return customerRepository.findCustomerByAppUser(appUser);
     }
-
-    @Override
-    public Customer save(Customer customer) {
-        return customerRepository.save(customer);
-    }
-
     @Override
     public List<Customer> getWaitingAcceptCustomer() {
         return customerRepository.getWaitingAcceptCustomer();
+    }
+
+    @Override
+    public List<Customer> findAll() {
+        return customerRepository.findAll();
     }
 
     @Override

@@ -17,6 +17,8 @@ public class Food {
     private String image;
     private String description;
     private double price;
+    @Column(name = "is_Empty", columnDefinition = "boolean default true")
+    private Boolean isEmpty;
     @Column (columnDefinition = "BIGINT default 0")
     private Long sold;
     @ManyToOne

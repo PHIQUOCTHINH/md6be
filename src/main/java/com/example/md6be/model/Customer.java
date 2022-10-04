@@ -26,4 +26,5 @@ public class Customer {
 
     @Column(name = "is_Active", columnDefinition = "boolean default true")
     private Boolean isActive;
+    private String address;
 }

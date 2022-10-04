@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderService implements IOrderService {
@@ -36,8 +37,8 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public Order findOrderById(Long id) {
-        return orderRepository.findOrderById(id);
+    public Optional<Order> findOrderById(Long id) {
+        return orderRepository.findById(id);
     }
 
     @Override
@@ -45,10 +46,10 @@ public class OrderService implements IOrderService {
     orderRepository.confirmOrder(idOrder);
     }
 
-    @Override
-    public List<Order> findOrdersByCustomerId(Long idCustomer) {
-        return orderRepository.findOrdersByCustomerId(idCustomer);
-    }
+//    @Override
+//    public List<Order> findOrdersByCustomerId(Long id) {
+//        return orderRepository.findOrdersByCustomerId(id);
+//    }
 
     @Override
     public List<Order> findOrderByCustomerId(Long id) {
@@ -74,4 +75,15 @@ public class OrderService implements IOrderService {
     public List<Order> findOrdersConfirmedDateDESC(int id) {
         return orderRepository.findOrdersConfirmedDateDESC(id);
     }
+
+    @Override
+    public List<Order> findOrdersByUserId(Long id) {
+        return orderRepository.findOrdersByUserId(id);
+    }
+
+    @Override
+    public void delete(long id) {
+        orderRepository.deleteById(id);
+    }
+
 }

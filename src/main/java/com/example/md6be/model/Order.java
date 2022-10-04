@@ -14,11 +14,11 @@ public class Order {
     private Long id;
 
     private Date createAt;
-    @ManyToOne
-    private OrderStatus orderStatus;
     private double priceTotal;
     @ManyToOne
     private Customer customer;
+    @Column(name = "is_Accept", columnDefinition = "boolean default false")
+    private Boolean isAccept;
     @ManyToOne
     private Merchant merchant;
 }
