@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CustomerService implements ICustomerService {
@@ -31,8 +32,8 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
-    public Customer findCustomerById(Long id) {
-        return customerRepository.findCustomerById(id);
+    public Optional<Customer> findCustomerById(Long id) {
+        return customerRepository.findById(id);
     }
 
     @Override
@@ -53,5 +54,19 @@ public class CustomerService implements ICustomerService {
     @Override
     public Customer findCustomerByAppUser(AppUser appUser) {
         return customerRepository.findCustomerByAppUser(appUser);
+    }
+    @Override
+    public List<Customer> getWaitingAcceptCustomer() {
+        return customerRepository.getWaitingAcceptCustomer();
+    }
+
+    @Override
+    public List<Customer> findAll() {
+        return customerRepository.findAll();
+    }
+
+    @Override
+    public List<Customer> findCustomerByIsAccept(Boolean isAccept) {
+        return customerRepository.findCustomerByIsAccept(isAccept);
     }
 }

@@ -1,12 +1,10 @@
 package com.example.md6be.controller;
 
-import com.example.md6be.model.Address;
-import com.example.md6be.model.AppUser;
-import com.example.md6be.model.Customer;
-import com.example.md6be.model.Role;
+import com.example.md6be.model.*;
 import com.example.md6be.service.IAddressService;
 import com.example.md6be.service.IAppUserService;
 import com.example.md6be.service.ICustomerService;
+import com.example.md6be.service.IMerchantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +23,8 @@ public class LoginController {
     ICustomerService customerService;
     @Autowired
     IAddressService addressService;
+    @Autowired
+    IMerchantService merchantService;
     @GetMapping
     public ResponseEntity<List<AppUser>>findAll() {
         return new ResponseEntity<>(appUserService.findAll(), HttpStatus.OK);
@@ -37,16 +37,21 @@ public class LoginController {
             for (Role role: appUser1.getRoles()) {
                 if (role.getName().equals("ROLE_ADMIN")){
                     return new ResponseEntity<>(appUser1, HttpStatus.OK);
-                }else {
+                }else if (role.getName().equals("ROLE_CUSTOMER")){
                     Customer customer = customerService.findCustomerByAppUser(appUser1);
                     System.out.println(customer);
                     if (customer.getIsActive() && customer.getIsAccept()){
                         return new ResponseEntity<>(appUser1, HttpStatus.OK);
                     }
+                }else if (role.getName().equals("ROLE_MERCHANT")){
+                    Merchant merchant = merchantService.findByAppUser(appUser1);
+                    if (merchant.getIsActive() && merchant.getIsAccept()){
+                        return new ResponseEntity<>(appUser1, HttpStatus.OK);
+                    }
                 }
             }
         }
-        return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
+        return null;
     }
 
     @GetMapping("/get")
@@ -76,6 +81,18 @@ public class LoginController {
             return new ResponseEntity<>(customer.getAppUser(), HttpStatus.OK);
         }
 
+    }
+
+    @PostMapping("/register-merchant")
+    public ResponseEntity<?>registerMerchant(@RequestBody Merchant merchant) {
+        AppUser appUser = appUserService.findByUserName(merchant.getAppUser().getUsername());
+        if (appUser!=null){
+            return new ResponseEntity<>(false, HttpStatus.OK);
+        }else {
+            appUserService.save(merchant.getAppUser());
+            merchantService.save(merchant);
+            return new ResponseEntity<>(merchant.getAppUser(), HttpStatus.OK);
+        }
     }
 
     @GetMapping("/get-customer")

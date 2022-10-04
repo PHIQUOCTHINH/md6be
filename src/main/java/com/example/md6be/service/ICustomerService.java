@@ -4,6 +4,7 @@ import com.example.md6be.model.AppUser;
 import com.example.md6be.model.Customer;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ICustomerService {
     public void save(Customer customer);
@@ -11,7 +12,7 @@ public interface ICustomerService {
     public Customer findCustomerByUserName(String userName);
     public List<Customer> getAllCustomers();
 
-    public Customer findCustomerById(Long id) ;
+    public Optional<Customer> findCustomerById(Long id) ;
 
     public Customer saveCustomer(Customer customer) ;
 
@@ -20,4 +21,8 @@ public interface ICustomerService {
     public List<Customer> findActiveCustomer() ;
 
     public  Customer findCustomerByAppUser(AppUser appUser);
+    List<Customer> getWaitingAcceptCustomer();
+    List<Customer> findAll();
+    List<Customer> findCustomerByIsAccept(Boolean isAccept);
+
 }
