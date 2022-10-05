@@ -41,6 +41,11 @@ public class FoodService implements IFoodService {
         return foodRepository.findFoodsByMerchantId(id);
     }
 
+    @Override
+    public List<Food> findAllByUserId(Long id) {
+        return foodRepository.findAllByUserId(id);
+    }
+
     public List<Food> findFoodByMerchant(Merchant merchant) {
         return foodRepository.findFoodByMerchant(merchant);
     }

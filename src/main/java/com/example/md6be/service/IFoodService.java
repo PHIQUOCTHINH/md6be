@@ -14,4 +14,5 @@ public interface IFoodService {
 
     List<Food> findAll();
     List<Food> findFoodsByMerchantId(Long id);
+    List<Food> findAllByUserId(Long id);
 }

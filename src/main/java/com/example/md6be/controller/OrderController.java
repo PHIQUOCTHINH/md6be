@@ -60,7 +60,7 @@ public class OrderController {
         java.util.Date now = new java.util.Date();
         Timestamp timestamp = new Timestamp(now.getTime());
         Order newOrder = new Order();
-        newOrder.setOrderStatus(order.getOrderStatus());
+//        newOrder.setOrderStatus(order.getOrderStatus());
         newOrder.setCustomer(order.getCustomer());
         newOrder.setMerchant(order.getMerchant());
         newOrder.setPriceTotal(order.getPriceTotal());

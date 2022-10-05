@@ -19,6 +19,8 @@ public interface IMerchantRepository extends JpaRepository<Merchant,Long> {
     @Query(nativeQuery = true, value = "SELECT * FROM merchant where name like concat('%',:name,'%');")
     Iterable<Merchant> findAllByNameContaining(String name);
 
+    Merchant findByAppUserId(Long id);
+
     List<Merchant> findMerchantByIsAccept(Boolean isAccept);
 
     @Query(nativeQuery = true, value = "select * from merchant where is_accept = true;")

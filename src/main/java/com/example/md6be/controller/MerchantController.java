@@ -2,6 +2,7 @@ package com.example.md6be.controller;
 
 import com.example.md6be.model.Food;
 import com.example.md6be.model.FoodCategory;
+import com.example.md6be.model.Merchant;
 import com.example.md6be.service.impl.FoodCategoryService;
 import com.example.md6be.service.impl.FoodService;
 import com.example.md6be.service.impl.MerchantService;
@@ -21,11 +22,12 @@ public class MerchantController {
     FoodService foodService;
     @Autowired
     MerchantService merchantService;
+
     @Autowired
     FoodCategoryService foodCategoryService;
     @GetMapping("/{id}")
     public ResponseEntity<List<Food>> findAll(@PathVariable Long id) {
-        return new ResponseEntity<>(foodService.findFoodsByMerchantId(id), HttpStatus.OK);
+        return new ResponseEntity<>(foodService.findAllByUserId(id), HttpStatus.OK);
     }
     @GetMapping("/food-detail/{id}")
     public ResponseEntity<Food> foodDetail(@PathVariable Long id) {
@@ -41,21 +43,19 @@ public class MerchantController {
 
     @PostMapping
     public ResponseEntity<Food> create(@RequestBody Food food) {
+        Merchant merchant = merchantService.findByAppUserId(food.getMerchant().getId());
+        food.setMerchant(merchant);
+        System.out.println(food);
         foodService.save(food);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@RequestBody Food food,
-                                       @PathVariable Long id) {
-        Optional<Food> productOptional = foodService.findById(id);
-        if (productOptional.isPresent()) {
-            food.setId(id);
+    @PutMapping()
+    public ResponseEntity<?> update(@RequestBody Food food) {
+        Merchant merchant = merchantService.findByAppUserId(food.getMerchant().getId());
+        food.setMerchant(merchant);
             foodService.save(food);
             return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
     }
     @GetMapping("/category")
     public ResponseEntity<List<FoodCategory>> findAllCategory() {
@@ -67,5 +67,15 @@ public class MerchantController {
         Optional<FoodCategory> category = foodCategoryService.findById(id);
         return category.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PostMapping("/active-ban-food/{id}")
+    private ResponseEntity<Food> activeBanFood(@PathVariable Long id){
+        Optional<Food> food = foodService.findById(id);
+        Food activeBan = food.get();
+        System.out.println(activeBan);
+        activeBan.setIsEmpty(!activeBan.getIsEmpty());
+        foodService.save(activeBan);
+        return new ResponseEntity<>(activeBan,HttpStatus.OK);
     }
 }

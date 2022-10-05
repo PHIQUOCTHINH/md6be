@@ -66,4 +66,9 @@ public class MerchantService implements IMerchantService {
         return merchantRepository.filterCustomerByNameAsc();
     }
 
+    @Override
+    public Merchant findByAppUserId(Long id) {
+        return merchantRepository.findByAppUserId(id);
+    }
+
 }

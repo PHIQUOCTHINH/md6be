@@ -6,7 +6,6 @@ import com.example.md6be.service.impl.AppUserService;
 import com.example.md6be.service.impl.CustomerService;
 import com.example.md6be.service.impl.MerchantService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -104,8 +103,10 @@ public class AdminController {
         Optional<Customer> customer = customerService.findCustomerById(id);
         Customer newCustomer = customer.get();
         newCustomer.setIsAccept(true);
+        System.out.println(newCustomer);
         customerService.save(newCustomer);
-        sendMailController.sendEmailC(customer.get().getAppUser());
+        System.out.println(newCustomer);
+//        sendMailController.sendEmailC(customer.get().getAppUser());
         return new ResponseEntity<>(newCustomer,HttpStatus.CREATED) ;
     }
     // hiển thị list customer đang đợi accept
