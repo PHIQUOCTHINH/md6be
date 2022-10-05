@@ -3,7 +3,6 @@ package com.example.md6be.service.impl;
 
 import com.example.md6be.model.AppUser;
 import com.example.md6be.model.Customer;
-import com.example.md6be.model.Merchant;
 import com.example.md6be.repository.ICustomerRepository;
 import com.example.md6be.service.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;

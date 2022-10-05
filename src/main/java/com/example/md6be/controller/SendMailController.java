@@ -32,8 +32,14 @@ public class SendMailController {
 
         message.setTo(appUser.getUsername());
         message.setSubject("Thông báo đăng ký thành công "  + day);
-        message.setText("Xin chào \n" + appUser.getUsername()
-                + "Bạn có thể đăng sản phẩm lên trang web");
+        message.setText("Chào bạn \n" + appUser.getUsername()
+                + "Trưa nay ăn gì! xin thông báo, vào ngày " + day
+                + " bạn đã chính thức trở thành một thành viên tham gia Ứng dụng Trưa nay ăn gì!"
+                + " cùng chung tay xây dựng Trưa nay ăn gì! ngày càng phát triển nhé! \n"
+                + "Mọi thắc mắc xin liên hệ: \n"
+                + "Hotline: 0888 666 888 \n"
+                + "Email: okanemochininaru98@gmail.com.com"
+        );
 
         //send message
         this.emailSender.send(message);

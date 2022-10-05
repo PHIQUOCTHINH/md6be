@@ -50,9 +50,9 @@ public class OrderController {
         return new ResponseEntity<>(cartDetailService.save(newCartDetail),HttpStatus.OK);
     }
     // test get item(cart-detail) trong cart
-    @GetMapping("cart-detail")
-    private ResponseEntity<List<CartDetail>> getDetailCart(){
-        return new ResponseEntity<>(cartDetailService.getAll(),HttpStatus.OK);
+    @GetMapping("/find-bill-by-user-id/{id}")
+    private ResponseEntity<List<CartDetail>> getDetailCart(@PathVariable Long id){
+        return new ResponseEntity<>(cartDetailService.findAllCartDetailByUserId(id),HttpStatus.OK);
     }
 // lưu order
     @PostMapping("/save-order")

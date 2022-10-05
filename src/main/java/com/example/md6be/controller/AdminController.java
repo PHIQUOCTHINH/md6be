@@ -40,7 +40,7 @@ public class AdminController {
     //chap nhan merchant
 
     @PostMapping("/accept-merchant/{id}")
-    private ResponseEntity<Merchant> acceptSeller(@PathVariable Long id ){
+    private ResponseEntity<Merchant> acceptMerchant(@PathVariable Long id ){
         Optional<Merchant> merchant = merchantService.findById(id);
         Merchant newMerchant = merchant.get();
         newMerchant.setIsAccept(true);
