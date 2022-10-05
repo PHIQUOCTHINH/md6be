@@ -15,10 +15,13 @@ public class Food {
     private String name;
     @Lob
     private String image;
+    private Long quantityStorage;
     private String description;
     private double price;
     @Column (columnDefinition = "BIGINT default 0")
     private Long sold;
+    @Column(name = "is_Empty", columnDefinition = "boolean default false")
+    private Boolean isEmpty;
     @ManyToOne
     private FoodCategory foodCategory;
     @ManyToOne

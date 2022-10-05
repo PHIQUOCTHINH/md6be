@@ -16,4 +16,8 @@ public interface IAppUserRepository extends JpaRepository<AppUser,Long> {
 
     @Query(nativeQuery = true, value = "select * from users join user_role on users.id = user_role.user_id where role_id = 2; ")
     List<AppUser> getAppUserAsMerchant();
+
+    AppUser findAppUserById(Long id);
+    AppUser findByPasswordAndUsername(String pass,String name);
+    AppUser findByPassword(String pass);
 }
