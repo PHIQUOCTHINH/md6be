@@ -2,6 +2,7 @@ package com.example.md6be.controller;
 
 import com.example.md6be.model.Food;
 import com.example.md6be.model.FoodCategory;
+import com.example.md6be.model.Merchant;
 import com.example.md6be.service.impl.FoodCategoryService;
 import com.example.md6be.service.impl.FoodService;
 import com.example.md6be.service.impl.MerchantService;
@@ -44,22 +45,20 @@ public class MerchantController {
 // create mon an
     @PostMapping
     public ResponseEntity<Food> create(@RequestBody Food food) {
+        Merchant merchant = merchantService.findByAppUserId(food.getMerchant().getId());
+        food.setMerchant(merchant);
         foodService.save(food);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 // update mon an
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@RequestBody Food food,
-                                       @PathVariable Long id) {
-        Optional<Food> productOptional = foodService.findById(id);
-        if (productOptional.isPresent()) {
-            food.setId(id);
-            foodService.save(food);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
+@PutMapping()
+public ResponseEntity<?> update(@RequestBody Food food) {
+    Merchant merchant = merchantService.findByAppUserId(food.getMerchant().getId());
+    food.setMerchant(merchant);
+    foodService.save(food);
+    return new ResponseEntity<>(HttpStatus.OK);
+}
+
     // hien thi danh sach category
     @GetMapping("/category")
     public ResponseEntity<List<FoodCategory>> findAllCategory() {
@@ -82,8 +81,27 @@ public class MerchantController {
         return new ResponseEntity<>(activeBan,HttpStatus.OK);
     }
     // tim theo ten gan dung
-    @GetMapping("/find-food-like-name/{name}")
-    private ResponseEntity<List<Food>> findLikeName(@PathVariable String name){
-        return new ResponseEntity<>(foodService.findFood(name),HttpStatus.OK);
+    @GetMapping("/find-food-like-name/{name}/{id}")
+    private ResponseEntity<List<Food>> findLikeName(@PathVariable String name,@PathVariable Long id){
+        return new ResponseEntity<>(foodService.findFood(name,id),HttpStatus.OK);
     }
+    @GetMapping("/merchant/{id}")
+    public ResponseEntity<Merchant> findMerchantById(@PathVariable Long id){
+        Merchant merchant = merchantService.findMerchantById(id);
+        return new ResponseEntity<>(merchant, HttpStatus.OK);
+    }
+    @GetMapping("/get-merchant-user/{id}")
+    public ResponseEntity<Merchant> findMerchantByUserId(@PathVariable Long id){
+        Merchant merchant = merchantService.findByAppUserId(id);
+        return new ResponseEntity<>(merchant, HttpStatus.OK);
+    }
+    @PutMapping("/update-merchant/{id}")
+    public ResponseEntity<Merchant> update(@RequestBody Merchant merchant) {
+//        Merchant merchant1  = merchantService.findByAppUserId(merchant.getAppUser().getId());
+        Merchant merchant1 = merchantService.findMerchantById(merchant.getId());
+        merchantService.save(merchant1);
+      return new ResponseEntity<>(merchant1, HttpStatus.OK);
+
+    }
+
 }

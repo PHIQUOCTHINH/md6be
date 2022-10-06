@@ -14,5 +14,5 @@ public interface IFoodService {
 
     List<Food> findAll();
     List<Food> findFoodsByUserId(Long id);
-    List<Food> findFood( String f);
+    List<Food> findFood( String f,Long id);
 }

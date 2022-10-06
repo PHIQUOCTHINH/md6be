@@ -21,4 +21,5 @@ public interface IMerchantService {
     public Merchant findMerchantById(Long id);
     public List<Merchant> filterMerchantByNameDown();
     public List<Merchant> filterMerchantByNameUp();
+    List<Merchant> findMerchantByPhoneNumber(String numberPhone);
 }

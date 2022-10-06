@@ -15,6 +15,7 @@ public class Food {
     private String name;
     @Lob
     private String image;
+    private Long quantityStorage;
     private String description;
     private double price;
     @Column(name = "is_Empty", columnDefinition = "boolean default true")

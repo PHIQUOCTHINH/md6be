@@ -48,4 +48,7 @@ public class AppUserService implements IAppUserService {
     public void save(AppUser appUser) {
         appUserRepository.save(appUser);
     }
+    AppUser findAppUserById(Long id){
+        return appUserRepository.findAppUserById(id);
+    }
 }

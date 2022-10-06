@@ -95,6 +95,7 @@ public class LoginController {
         }
     }
 
+
     @GetMapping("/get-customer")
     public ResponseEntity<?>findAllCustomer() {
         return new ResponseEntity<>(customerService.findActiveCustomer(), HttpStatus.OK);

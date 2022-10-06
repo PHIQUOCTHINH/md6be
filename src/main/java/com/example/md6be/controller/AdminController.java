@@ -143,4 +143,9 @@ public class AdminController {
         Customer customer = customerService.findCustomerById(id).get();
         return new ResponseEntity<>(customer,HttpStatus.ACCEPTED);
     }
+    @GetMapping("/find-merchant-by-phone-number/{phone}")
+    public ResponseEntity< List<Merchant>> findByNumberPhone(@PathVariable String phone){
+        List<Merchant> merchants = merchantService.findMerchantByPhoneNumber(phone);
+      return new ResponseEntity<>(merchants,HttpStatus.OK);
+    }
 }

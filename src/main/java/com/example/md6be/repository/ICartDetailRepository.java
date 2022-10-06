@@ -11,6 +11,6 @@ import java.util.List;
 
 @Repository
 public interface ICartDetailRepository extends JpaRepository<CartDetail,Long> {
-    @Query(value = "select*from cartdetail where merchant_id in (select merchant.id from merchant where user_id = :id )  ", nativeQuery = true)
-    List<CartDetail> findAllCartDetailByUserId(@Param("id") Long id);
+    @Query(value = "select * from cartdetail where cart_id = (select carts.id from carts where customer_id = (select customer.id from customer where user_id = ?1))", nativeQuery = true)
+    List<CartDetail> findAllByUserId( Long id);
 }
