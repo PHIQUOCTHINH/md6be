@@ -6,6 +6,8 @@ import com.example.md6be.model.Merchant;
 import com.example.md6be.repository.IFoodRepository;
 import com.example.md6be.service.IFoodService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.Optional;
 public class FoodService implements IFoodService {
     @Autowired
     IFoodRepository foodRepository;
+
     @Override
     public Optional<Food> findById(Long id) {
         return foodRepository.findById(id);
@@ -34,9 +37,24 @@ public class FoodService implements IFoodService {
     public List<Food> findAll() {
         return foodRepository.findAll();
     }
-    public List<Food> findFoodByMerchant(Merchant merchant){
-        return foodRepository.findFoodByMerchant(merchant);
+
+    @Override
+    public List<Food> findFoodsByUserId(Long id) {
+        return foodRepository.findFoodsByUserId(id);
     }
 
-}
+    @Override
+    public List<Food> findFood(String f) {
+        return foodRepository.findFood("%" + f + "%");
+    }
 
+    @Override
+    public List<Food> findAllByMerchant(Merchant merchant) {
+        return foodRepository.findAllByMerchant(merchant);
+    }
+
+
+    public List<Food> findFoodByMerchant(Merchant merchant) {
+        return foodRepository.findFoodByMerchant(merchant);
+    }
+}

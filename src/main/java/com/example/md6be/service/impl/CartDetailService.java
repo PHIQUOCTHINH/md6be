@@ -22,4 +22,9 @@ public class CartDetailService implements ICartDetailService {
     public List<CartDetail> getAll() {
         return cartDetailRepository.findAll();
     }
+
+    @Override
+    public List<CartDetail> findAllCartDetailByUserId(Long id) {
+        return cartDetailRepository.findAllCartDetailByUserId(id);
+    }
 }

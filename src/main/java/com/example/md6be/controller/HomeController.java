@@ -5,6 +5,8 @@ import com.example.md6be.model.FoodCategory;
 import com.example.md6be.model.Merchant;
 import com.example.md6be.service.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -61,8 +63,8 @@ public class HomeController {
         return new ResponseEntity<>(merchant, HttpStatus.OK);
     }
 
-    @GetMapping("/food/{idSeller}")
-    public ResponseEntity<List<Food>> findProductBySeller(@PathVariable Long idMerchant){
+    @GetMapping("/food/{idMerchant}")
+    public ResponseEntity<List<Food>> findFoodByMerchant(@PathVariable Long idMerchant){
         Merchant merchant = merchantService.findMerchantById(idMerchant);
         List<Food> foods = foodService.findFoodByMerchant(merchant);
         return new ResponseEntity<>(foods, HttpStatus.OK);
@@ -71,6 +73,13 @@ public class HomeController {
     public ResponseEntity<List<Merchant>> findAllMerchant(){
         List<Merchant> merchant = merchantService.findAllMerchant();
         return new ResponseEntity<>(merchant, HttpStatus.OK);
+    }
+
+    @GetMapping("/foods/{id}")
+    public ResponseEntity<List<Food>> findAllByMerchant(@PathVariable Long idMerchant){
+        Merchant merchant = merchantService.findMerchantById(idMerchant);
+        List<Food> foods = foodService.findAllByMerchant(merchant) ;
+        return new ResponseEntity<>(foods, HttpStatus.OK);
     }
 
 }

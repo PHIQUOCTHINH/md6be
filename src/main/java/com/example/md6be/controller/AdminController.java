@@ -6,6 +6,7 @@ import com.example.md6be.service.impl.AppUserService;
 import com.example.md6be.service.impl.CustomerService;
 import com.example.md6be.service.impl.MerchantService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,16 +18,16 @@ import java.util.Optional;
 @CrossOrigin("*")
 @RequestMapping("/api/admin")
 public class AdminController {
-    @Autowired
+@Autowired
     AppUserService appUserService;
-    @Autowired
+@Autowired
     MerchantService merchantService;
-    @Autowired
+@Autowired
     SendMailController sendMailController;
-    @Autowired
+@Autowired
     CustomerService customerService;
 
-    // quan ly merchant
+// quan ly merchant
     //xem danh sach merchant doi chap nhan
     @GetMapping("/accept-merchant")
     private ResponseEntity<List<Merchant>> showWaitingMerchant(){
@@ -76,6 +77,7 @@ public class AdminController {
             activeBan.setIsActive(true);
         }
         merchantService.save(activeBan);
+        sendMailController.sendEmailBan(merchant.get());
         return new ResponseEntity<>(activeBan,HttpStatus.OK);
     }
     // sắp xếp tên merchant theo thứ tự
@@ -103,6 +105,7 @@ public class AdminController {
         Customer newCustomer = customer.get();
         newCustomer.setIsAccept(true);
         customerService.save(newCustomer);
+        sendMailController.sendEmailC(customer.get().getAppUser());
         return new ResponseEntity<>(newCustomer,HttpStatus.CREATED) ;
     }
     // hiển thị list customer đang đợi accept
@@ -131,6 +134,7 @@ public class AdminController {
             activeBan.setIsActive(true);
         }
         customerService.save(activeBan);
+        sendMailController.sendEmailBanCustomer(customer.get());
         return new ResponseEntity<>(activeBan,HttpStatus.OK);
     }
     // tìm tài khoản customer theo id
@@ -140,4 +144,3 @@ public class AdminController {
         return new ResponseEntity<>(customer,HttpStatus.ACCEPTED);
     }
 }
-

@@ -1,10 +1,12 @@
 package com.example.md6be.repository;
 
+import com.example.md6be.model.Food;
 import com.example.md6be.model.Merchant;
 import com.example.md6be.model.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
@@ -26,8 +28,9 @@ public interface IOrderRepository extends JpaRepository<Order,Long> {
     @Query(nativeQuery = true, value = "update md6_case.orders set orders.order_status_id = 2 where orders.id =:idOrder")
     void confirmOrder(Long idOrder);
 
-    @Query(nativeQuery = true, value = "SELECT * FROM md6_case.orders where customer_id =:idCustomer ;")
-    List<Order> findOrdersByCustomerId (Long idCustomer);
+    @Query(nativeQuery = true, value = "select*from orders where merchant_id in (select merchant.id from merchant where user_id =:id)")
+    List<Order> findOrdersByUserId (@Param("id") Long id);
+
     List<Order> findOrderByCustomerId(Long id);
     @Query(nativeQuery = true, value = "SELECT * FROM md6_case.orders where order_status_id =:id order by price_total asc;")
     List<Order> findOrdersConfirmedASC(int id);
@@ -41,3 +44,4 @@ public interface IOrderRepository extends JpaRepository<Order,Long> {
     @Query(nativeQuery = true, value = "SELECT * FROM md6_case.orders where order_status_id =:id order by create_at desc;")
     List<Order> findOrdersConfirmedDateDESC(int id);
 }
+

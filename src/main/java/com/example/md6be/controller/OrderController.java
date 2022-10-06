@@ -26,7 +26,7 @@ public class OrderController {
     OrderService orderService;
     @Autowired
     OrderDetailService orderDetailService;
-    // tạo cart ứng với id customer, mỗi customer có 1 cart
+// tạo cart ứng với id customer, mỗi customer có 1 cart
     @PostMapping("/save-cart")
     public ResponseEntity<Cart> saveCart(@RequestBody Customer customer){
         Cart cart = new Cart();
@@ -38,7 +38,7 @@ public class OrderController {
     private ResponseEntity<List<Cart>> getCart(){
         return new ResponseEntity<>(cartService.findAll(),HttpStatus.OK);
     }
-    // tạo item add vào cart
+// tạo item add vào cart
     @PostMapping("/save-cart-detail")
     public ResponseEntity<CartDetail> saveCartDetail(@RequestBody CartDetail cartDetail){
         CartDetail newCartDetail = new CartDetail();
@@ -50,24 +50,23 @@ public class OrderController {
         return new ResponseEntity<>(cartDetailService.save(newCartDetail),HttpStatus.OK);
     }
     // test get item(cart-detail) trong cart
-    @GetMapping("cart-detail")
-    private ResponseEntity<List<CartDetail>> getDetailCart(){
-        return new ResponseEntity<>(cartDetailService.getAll(),HttpStatus.OK);
+    @GetMapping("/find-bill-by-user-id/{id}")
+    private ResponseEntity<List<CartDetail>> getDetailCart(@PathVariable Long id){
+        return new ResponseEntity<>(cartDetailService.findAllCartDetailByUserId(id),HttpStatus.OK);
     }
-    // lưu order
+// lưu order
     @PostMapping("/save-order")
     public ResponseEntity<Order> saveOrder(@RequestBody Order order){
         java.util.Date now = new java.util.Date();
         Timestamp timestamp = new Timestamp(now.getTime());
         Order newOrder = new Order();
-        newOrder.setOrderStatus(order.getOrderStatus());
         newOrder.setCustomer(order.getCustomer());
         newOrder.setMerchant(order.getMerchant());
         newOrder.setPriceTotal(order.getPriceTotal());
         newOrder.setCreateAt(timestamp);
         return new ResponseEntity<>(orderService.save(newOrder),HttpStatus.OK);
     }
-    // lưu order detail
+// lưu order detail
     @GetMapping("/save-order-detail")
     public ResponseEntity<OrderDetail> saveOrderDetail(@RequestBody OrderDetail orderDetail){
         OrderDetail newOrderDetail = new OrderDetail();
@@ -77,17 +76,17 @@ public class OrderController {
         newOrderDetail.setPrice(orderDetail.getPrice());
         return new ResponseEntity<>(orderDetailService.save(newOrderDetail),HttpStatus.OK);
     }
-    // tìm tất cả order ứng với id của customer(xem danh sach đơn hàng của mình)
-    @GetMapping("/find-orders-by-customer-id/{id}")
+// tìm tất cả order ứng với id của merchant(xem danh sach đơn hàng của mình)
+    @GetMapping("/find-orders-by-user-id/{id}")
     public ResponseEntity<List<Order>> findOrdersByCustomerId(@PathVariable Long id) {
-        return new ResponseEntity<>(orderService.findOrderByCustomerId(id),HttpStatus.OK);
+        return new ResponseEntity<>(orderService.findOrdersByUserId(id),HttpStatus.OK);
     }
 
-    @GetMapping("/find-order-by-id")
-    public ResponseEntity<Order> findOrderById(@RequestBody Long idOrder) {
-        return new ResponseEntity<>(orderService.findOrderById(idOrder),HttpStatus.OK);
-    }
-    // xem order detail theo order id
+//    @GetMapping("/find-order-by-id")
+//    public ResponseEntity<Order> findOrderById(@RequestBody Long idOrder) {
+//        return new ResponseEntity<>(orderService.findOrderById(idOrder),HttpStatus.OK);
+//    }
+  // xem order detail theo order id
     @GetMapping("/find-order-details-by-order-id/{id}")
     public ResponseEntity<List<OrderDetail>> findOrderDetailsByOrder(@PathVariable Long id) {
         return new ResponseEntity<>(orderDetailService.findOrderDetailByOrderId(id),HttpStatus.OK);
@@ -101,5 +100,22 @@ public class OrderController {
         }
         return null;
     }
-}
+    @PostMapping("/accept-order/{id}")
+    private ResponseEntity<Order> acceptOder(@PathVariable Long id ){
+        Optional<Order> order = orderService.findOrderById(id);
+        Order orderNew = order.get();
+        orderNew.setIsAccept(true);
+        orderService.save(orderNew);
+//        sendMailController.sendEmail(newMerchant.getAppUser());
+        return new ResponseEntity<>(orderNew,HttpStatus.CREATED) ;
+    }
+    @DeleteMapping("/delete-order/{id}")
+    private ResponseEntity<Void> deleteOrder(@PathVariable long id){
+        Optional<Order> orderOptional = orderService.findOrderById(id);
+        if (orderOptional.isPresent()){
+            orderService.delete(id);
+        }
+        return null;
+    }
 
+}

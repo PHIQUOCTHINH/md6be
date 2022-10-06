@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface IOrderDetailRepository extends JpaRepository<OrderDetail,Long> {
+
     List<OrderDetail> findOrderDetailByOrder(Order order);
 
     @Query(nativeQuery = true, value = "SELECT * FROM md6_case.orderdetails where order_id =:idOrder ;")

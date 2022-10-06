@@ -1,5 +1,4 @@
 package com.example.md6be.config;
-
 import com.example.md6be.service.impl.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -31,10 +30,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/api/home/**","/login","/registerMerchant","/registerCustomer","/checkUserName").permitAll()
+        http.authorizeRequests().antMatchers("/api/home/**","/login/**","/api/login-register/**","/registerMerchant","/registerCustomer","/checkUserName").permitAll()
                 .and().authorizeRequests().antMatchers("/api/customer/**").hasRole("CUSTOMER")
                 .and().authorizeRequests().antMatchers("/api/admin/**").hasRole("ADMIN")
-                    .and().authorizeRequests().antMatchers("/api/merchant/**").hasRole("MERCHANT")
+                .and().authorizeRequests().antMatchers("/api/merchant/**").hasRole("MERCHANT")
                 .anyRequest().authenticated()
                 .and().csrf().disable();
 

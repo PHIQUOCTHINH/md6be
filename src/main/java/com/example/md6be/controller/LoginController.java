@@ -1,63 +1,49 @@
 package com.example.md6be.controller;
 
 import com.example.md6be.model.*;
-import com.example.md6be.service.impl.AddressService;
-import com.example.md6be.service.impl.AppUserService;
-import com.example.md6be.service.impl.CustomerService;
-import com.example.md6be.service.impl.MerchantService;
+import com.example.md6be.service.IAddressService;
+import com.example.md6be.service.IAppUserService;
+import com.example.md6be.service.ICustomerService;
+import com.example.md6be.service.IMerchantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @CrossOrigin("*")
-//@RequestMapping("/api/login")
+@RequestMapping("/api/login-register")
 public class LoginController {
-//    @Autowired
-//    JwtService jwtService;
-//
-//    @Autowired
-//    private AuthenticationManager authenticationManager;
+    @Autowired
+    IAppUserService appUserService;
 
     @Autowired
-    AppUserService appUserService;
-
+    ICustomerService customerService;
     @Autowired
-    MerchantService merchantService;
-
+    IAddressService addressService;
     @Autowired
-    CustomerService customerService;
-
-    @Autowired
-    AddressService addressService;
-
-    @Autowired
-    SendMailController sendMailController;
+    IMerchantService merchantService;
     @GetMapping
     public ResponseEntity<List<AppUser>>findAll() {
         return new ResponseEntity<>(appUserService.findAll(), HttpStatus.OK);
     }
+
     @PostMapping("/login")
     public ResponseEntity<?>login(@RequestBody AppUser appUser) {
         AppUser appUser1 = appUserService.findAppUserByPasswordAndUsername(appUser.getPassword(), appUser.getUsername());
         if (appUser1!=null){
             for (Role role: appUser1.getRoles()) {
-                if (role.getName().equals("ROLE_ADMIN")){
+                if (role.getName().equals("ADMIN")){
                     return new ResponseEntity<>(appUser1, HttpStatus.OK);
-                }else if (role.getName().equals("ROLE_CUSTOMER")){
+                }else if (role.getName().equals("CUSTOMER")){
                     Customer customer = customerService.findCustomerByAppUser(appUser1);
                     System.out.println(customer);
                     if (customer.getIsActive() && customer.getIsAccept()){
                         return new ResponseEntity<>(appUser1, HttpStatus.OK);
                     }
-                }else if (role.getName().equals("ROLE_MERCHANT")){
+                }else if (role.getName().equals("MERCHANT")){
                     Merchant merchant = merchantService.findByAppUser(appUser1);
                     if (merchant.getIsActive() && merchant.getIsAccept()){
                         return new ResponseEntity<>(appUser1, HttpStatus.OK);
@@ -114,6 +100,5 @@ public class LoginController {
         return new ResponseEntity<>(customerService.findActiveCustomer(), HttpStatus.OK);
 
     }
-
 
 }

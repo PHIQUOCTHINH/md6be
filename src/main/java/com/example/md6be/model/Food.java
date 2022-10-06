@@ -26,5 +26,4 @@ public class Food {
     private FoodCategory foodCategory;
     @ManyToOne
     private Merchant merchant;
-
 }

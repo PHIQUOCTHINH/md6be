@@ -17,36 +17,37 @@ import java.util.Optional;
 @CrossOrigin("*")
 @RequestMapping("/api/merchant")
 public class MerchantController {
-
-
     @Autowired
     FoodService foodService;
     @Autowired
     MerchantService merchantService;
     @Autowired
     FoodCategoryService foodCategoryService;
-    @GetMapping()
-    public ResponseEntity<List<Food>> findAll() {
-        return new ResponseEntity<>(foodService.findAll(), HttpStatus.OK);
-    }
+   // hiển thị danh sach món của chính merchant
     @GetMapping("/{id}")
-    public ResponseEntity<Food> findOne(@PathVariable Long id) {
+    public ResponseEntity<List<Food>> findAll(@PathVariable Long id) {
+        return new ResponseEntity<>(foodService.findFoodsByUserId(id), HttpStatus.OK);
+    }
+    // detail cua món ăn
+    @GetMapping("/food-detail/{id}")
+    public ResponseEntity<Food> foodDetail(@PathVariable Long id) {
         Optional<Food> food = foodService.findById(id);
         return food.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+    // xoa mon an nhưng có thể ko dùng
     @DeleteMapping("/{id}")
     public ResponseEntity<Food> delete(@PathVariable Long id) {
         foodService.delete(id);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
-
+// create mon an
     @PostMapping
     public ResponseEntity<Food> create(@RequestBody Food food) {
         foodService.save(food);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
+// update mon an
     @PutMapping("/{id}")
     public ResponseEntity<Void> update(@RequestBody Food food,
                                        @PathVariable Long id) {
@@ -59,6 +60,7 @@ public class MerchantController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    // hien thi danh sach category
     @GetMapping("/category")
     public ResponseEntity<List<FoodCategory>> findAllCategory() {
         return new ResponseEntity<>(foodCategoryService.findAll(), HttpStatus.OK);
@@ -70,5 +72,18 @@ public class MerchantController {
         return category.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+    // het hang
+    @PostMapping("/active-ban-food/{id}")
+    private ResponseEntity<Food> activeBanFood(@PathVariable Long id){
+        Optional<Food> food = foodService.findById(id);
+        Food activeBan = food.get();
+        activeBan.setIsEmpty(!activeBan.getIsEmpty());
+        foodService.save(activeBan);
+        return new ResponseEntity<>(activeBan,HttpStatus.OK);
+    }
+    // tim theo ten gan dung
+    @GetMapping("/find-food-like-name/{name}")
+    private ResponseEntity<List<Food>> findLikeName(@PathVariable String name){
+        return new ResponseEntity<>(foodService.findFood(name),HttpStatus.OK);
+    }
 }
-

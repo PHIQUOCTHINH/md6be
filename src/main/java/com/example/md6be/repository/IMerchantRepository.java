@@ -34,4 +34,8 @@ public interface IMerchantRepository extends JpaRepository<Merchant,Long> {
     @Query(nativeQuery = true, value = "SELECT * FROM md6_case.merchant order by name asc;")
     List<Merchant> filterCustomerByNameAsc();
 
+
+
+
+
 }

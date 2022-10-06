@@ -16,4 +16,6 @@ public interface IFoodCategoryRepository extends JpaRepository<FoodCategory,Long
 
     FoodCategory findFoodCategoryById(Long id);
     List<FoodCategory> findAll();
+
+
 }

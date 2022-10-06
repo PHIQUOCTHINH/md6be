@@ -15,6 +15,7 @@ import java.util.Optional;
 public class OrderDetailService implements IOrderDetailService {
     @Autowired
     IOrderDetailRepository detailRepository;
+
     @Override
     public List<OrderDetail> findOrderDetailByOrder(Order order) {
         return detailRepository.findOrderDetailByOrder(order);
@@ -40,4 +41,3 @@ public class OrderDetailService implements IOrderDetailService {
         return detailRepository.findById(id);
     }
 }
-
