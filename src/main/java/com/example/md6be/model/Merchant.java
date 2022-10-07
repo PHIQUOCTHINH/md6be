@@ -24,6 +24,7 @@ public class Merchant {
     private String imageBanner;
     @NotBlank
     private String address;
+    private String description;
 
     @Column(name = "is_Accept", columnDefinition = "boolean default false")
     private Boolean isAccept;
