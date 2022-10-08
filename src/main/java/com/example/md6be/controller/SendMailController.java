@@ -57,7 +57,8 @@ public class SendMailController {
             //send message
         }
         message.setText("Xin chào \n"
-                + "Email: okanemochininaru98@gmail.com");
+                + "Email: okanemochininaru98@gmail.com  \n"
+                + "http://localhost:8080/api/admin/active-ban-merchant/"+merchant.getId());
         this.emailSender.send(message);
 
     }

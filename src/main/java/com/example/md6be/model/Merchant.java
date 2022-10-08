@@ -34,4 +34,5 @@ public class Merchant {
     @OneToOne
     @JoinColumn(name = "user_id")
     private AppUser appUser;
+    private String description;
 }

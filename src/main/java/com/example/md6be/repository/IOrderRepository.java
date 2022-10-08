@@ -1,13 +1,18 @@
 package com.example.md6be.repository;
 
+import com.example.md6be.model.Customer;
 import com.example.md6be.model.Merchant;
 import com.example.md6be.model.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -40,4 +45,9 @@ public interface IOrderRepository extends JpaRepository<Order,Long> {
 
     @Query(nativeQuery = true, value = "SELECT * FROM md6_case.orders where order_status_id =:id order by create_at desc;")
     List<Order> findOrdersConfirmedDateDESC(int id);
+//    @Query(nativeQuery = true, value = "SELECT * FROM md6_case.orders where create_at =:createAt and customer_id = :id;")
+//    Order findByCreateAtAndAndCustomer(@Param("createAt") String createAt, @Param("id") Long id);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM md6_case.orders where orders.id =(select max(id) from md6_case.orders) and customer_id = :id ")
+    Order findLastOrder(@Param("id")Long id);
 }

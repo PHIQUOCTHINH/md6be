@@ -8,6 +8,8 @@ import com.example.md6be.service.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -74,4 +76,12 @@ public class OrderService implements IOrderService {
     public List<Order> findOrdersConfirmedDateDESC(int id) {
         return orderRepository.findOrdersConfirmedDateDESC(id);
     }
+
+    @Override
+    public Order findLastOrder(Long id) {
+        return orderRepository.findLastOrder(id);
+    }
+
+
+
 }

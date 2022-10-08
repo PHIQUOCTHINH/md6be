@@ -45,7 +45,6 @@ public class MerchantController {
     public ResponseEntity<Food> create(@RequestBody Food food) {
         Merchant merchant = merchantService.findByAppUserId(food.getMerchant().getId());
         food.setMerchant(merchant);
-        System.out.println(food);
         foodService.save(food);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -77,5 +76,10 @@ public class MerchantController {
         activeBan.setIsEmpty(!activeBan.getIsEmpty());
         foodService.save(activeBan);
         return new ResponseEntity<>(activeBan,HttpStatus.OK);
+    }
+
+    @GetMapping("/find-by-name/{id}/{name}")
+    public ResponseEntity<List<Food>> findAllByLikeName(@PathVariable("id") Long id, @PathVariable("name") String name) {
+        return new ResponseEntity<>(foodService.findFoodByLikeName(id, name), HttpStatus.OK);
     }
 }

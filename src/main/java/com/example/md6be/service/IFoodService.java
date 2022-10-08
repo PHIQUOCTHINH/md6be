@@ -1,6 +1,7 @@
 package com.example.md6be.service;
 
 import com.example.md6be.model.Food;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +14,9 @@ public interface IFoodService {
     void delete(Long id);
 
     List<Food> findAll();
-    List<Food> findFoodsByMerchantId(Long id);
     List<Food> findAllByUserId(Long id);
+    List<Food> findFood( String f,Long id);
+    List<Food> findFoodByLikeName(Long id,String name);
+    List<Food> findAllFoodByStatus();
+    List<Food> findAllByFoodCategoryAndAndMerchantIsActive( Long id);
 }

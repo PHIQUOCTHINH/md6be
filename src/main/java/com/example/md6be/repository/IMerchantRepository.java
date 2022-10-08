@@ -19,8 +19,6 @@ public interface IMerchantRepository extends JpaRepository<Merchant,Long> {
     @Query(nativeQuery = true, value = "SELECT * FROM merchant where name like concat('%',:name,'%');")
     Iterable<Merchant> findAllByNameContaining(String name);
 
-    Merchant findByAppUserId(Long id);
-
     List<Merchant> findMerchantByIsAccept(Boolean isAccept);
 
     @Query(nativeQuery = true, value = "select * from merchant where is_accept = true;")
@@ -35,4 +33,7 @@ public interface IMerchantRepository extends JpaRepository<Merchant,Long> {
 
     @Query(nativeQuery = true, value = "SELECT * FROM md6_case.merchant order by name asc;")
     List<Merchant> filterCustomerByNameAsc();
+    Merchant findByAppUserId(Long id);
+    @Query(nativeQuery = true, value = "select * from merchant where phone_number = ?1")
+    List<Merchant> findByPhone(String numberPhone);
 }

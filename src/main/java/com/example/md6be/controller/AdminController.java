@@ -66,7 +66,7 @@ public class AdminController {
         return new ResponseEntity<>(merchant,HttpStatus.ACCEPTED);
     }
     // ban và active tài khoản merchant
-    @PostMapping("/active-ban-merchant/{id}")
+    @GetMapping("/active-ban-merchant/{id}")
     private ResponseEntity<Merchant> activeBanMerchant(@PathVariable Long id){
         Optional<Merchant> merchant = merchantService.findById(id);
         Merchant activeBan = merchant.get();

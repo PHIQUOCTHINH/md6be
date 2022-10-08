@@ -35,15 +35,15 @@ public class LoginController {
         AppUser appUser1 = appUserService.findAppUserByPasswordAndUsername(appUser.getPassword(), appUser.getUsername());
         if (appUser1!=null){
             for (Role role: appUser1.getRoles()) {
-                if (role.getName().equals("ROLE_ADMIN")){
+                if (role.getName().equals("ADMIN")){
                     return new ResponseEntity<>(appUser1, HttpStatus.OK);
-                }else if (role.getName().equals("ROLE_CUSTOMER")){
+                }else if (role.getName().equals("CUSTOMER")){
                     Customer customer = customerService.findCustomerByAppUser(appUser1);
                     System.out.println(customer);
                     if (customer.getIsActive() && customer.getIsAccept()){
                         return new ResponseEntity<>(appUser1, HttpStatus.OK);
                     }
-                }else if (role.getName().equals("ROLE_MERCHANT")){
+                }else if (role.getName().equals("MERCHANT")){
                     Merchant merchant = merchantService.findByAppUser(appUser1);
                     if (merchant.getIsActive() && merchant.getIsAccept()){
                         return new ResponseEntity<>(appUser1, HttpStatus.OK);
