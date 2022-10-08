@@ -12,14 +12,15 @@ public interface IMerchantService {
     public Page<Merchant> findAll(Pageable pageable);
     public Merchant save(Merchant merchant);
     public List<Merchant> getWaitingAcceptMerchant();
-    public void deleteSeller(Long id);
+    public void deleteMerchant(Long id);
     public Optional<Merchant> findById(Long id);
     public Iterable<Merchant> findByName(String name);
-    public List<Merchant> showActiveSeller(Boolean isActive);
+    public List<Merchant> showActiveMerchant(Boolean isActive);
     public Page<Merchant> showMerchant(Pageable pageable);
     public Merchant findByAppUser(AppUser appUser);
     public Merchant findMerchantById(Long id);
     public List<Merchant> filterMerchantByNameDown();
     public List<Merchant> filterMerchantByNameUp();
     List<Merchant> findMerchantByPhoneNumber(String numberPhone);
+
 }

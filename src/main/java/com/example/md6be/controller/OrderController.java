@@ -119,41 +119,77 @@ public class OrderController {
 //    }
 
     @GetMapping("/{id}")
-    private ResponseEntity<?> findByUserId(@PathVariable Long id){
-        return new ResponseEntity<>(cartService.findAllByCustomerId(id),HttpStatus.OK);
+    private ResponseEntity<?> findByUserId(@PathVariable Long id) {
+        return new ResponseEntity<>(cartService.findAllByCustomerId(id), HttpStatus.OK);
     }
+
     @PostMapping
-    private ResponseEntity<Cart> createCart(@RequestBody Cart cart){
-        return new ResponseEntity<>(cartService.save(cart),HttpStatus.CREATED);
+    private ResponseEntity<Cart> createCart(@RequestBody Cart cart) {
+        return new ResponseEntity<>(cartService.save(cart), HttpStatus.CREATED);
     }
+
     @GetMapping
     private ResponseEntity<List<Cart>> getAll() {
         return new ResponseEntity<>(cartService.findAll(), HttpStatus.OK);
     }
+
     @GetMapping("/item")
     private ResponseEntity<List<CartDetail>> getAllItem() {
         return new ResponseEntity<>(cartDetailService.getAll(), HttpStatus.OK);
     }
+
     // Tìm kiếm List Item theo Id người dùng
     @GetMapping("/item/{idUser}")
     private ResponseEntity<List<CartDetail>> findItemByUserId(@PathVariable Long idUser) {
         return new ResponseEntity<>(cartDetailService.findAllByUserId(idUser), HttpStatus.OK);
     }
+
     @DeleteMapping("/item/{idItem}")
     private ResponseEntity<Void> deleteItemById(@PathVariable Long idItem) {
         cartDetailService.delete(idItem);
-        return new ResponseEntity<>( HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
+
     @PostMapping("/item")
-    private ResponseEntity<CartDetail> createItem(@RequestBody CartDetail cartDetail){
-        return new ResponseEntity<>(cartDetailService.save(cartDetail),HttpStatus.CREATED);
+    private ResponseEntity<CartDetail> createItem(@RequestBody CartDetail cartDetail) {
+        return new ResponseEntity<>(cartDetailService.save(cartDetail), HttpStatus.CREATED);
     }
+
     @PutMapping("/item")
-    private ResponseEntity<CartDetail> updateProduct(@RequestBody CartDetail cartDetail){
+    private ResponseEntity<CartDetail> updateProduct(@RequestBody CartDetail cartDetail) {
         Optional<CartDetail> optionalCartDetail = cartDetailService.findById(cartDetail.getId());
-        if(optionalCartDetail.isPresent()){
-            return new ResponseEntity<>(cartDetailService.save(cartDetail),HttpStatus.OK);
+        if (optionalCartDetail.isPresent()) {
+            return new ResponseEntity<>(cartDetailService.save(cartDetail), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/find-orders-by-user-id/{id}")
+    public ResponseEntity<List<Order>> findOrdersByCustomerId(@PathVariable Long id) {
+        return new ResponseEntity<>(orderService.findOrdersByUserId(id), HttpStatus.OK);
+    }
+
+    @PostMapping("/accept-order/{id}")
+    private ResponseEntity<Order> acceptOder(@PathVariable Long id) {
+        Optional<Order> order = orderService.findOrderById(id);
+        Order orderNew = order.get();
+        orderNew.setIsAccept(true);
+        orderService.save(orderNew);
+//        sendMailController.sendEmail(newMerchant.getAppUser());
+        return new ResponseEntity<>(orderNew, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/delete-order/{id}")
+    private ResponseEntity<Void> deleteOrder(@PathVariable long id) {
+        Optional<Order> orderOptional = orderService.findOrderById(id);
+        if (orderOptional.isPresent()) {
+            orderService.delete(id);
+        }
+        return null;
+    }
+
+    @GetMapping("/find-order-details-by-order-id/{id}")
+    public ResponseEntity<List<OrderDetail>> findOrderDetailsByOrder(@PathVariable Long id) {
+        return new ResponseEntity<>(orderDetailService.findOrder(id), HttpStatus.OK);
     }
 }

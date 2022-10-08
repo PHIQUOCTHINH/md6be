@@ -8,9 +8,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
+@Transactional
 public interface IMerchantRepository extends JpaRepository<Merchant,Long> {
     Page<Merchant> findAll(Pageable pageable);
     @Query(nativeQuery = true, value = "select * from merchant where is_accept = false;")

@@ -95,10 +95,11 @@ public ResponseEntity<?> update(@RequestBody Food food) {
         Merchant merchant = merchantService.findByAppUserId(id);
         return new ResponseEntity<>(merchant, HttpStatus.OK);
     }
-    @PutMapping("/update-merchant/{id}")
+    @PutMapping("/update-merchant")
     public ResponseEntity<Merchant> update(@RequestBody Merchant merchant) {
-//        Merchant merchant1  = merchantService.findByAppUserId(merchant.getAppUser().getId());
-        Merchant merchant1 = merchantService.findMerchantById(merchant.getId());
+        Merchant merchant1  = merchantService.findByAppUserId(merchant.getAppUser().getId());
+//        Optional<Merchant> merchant1 = merchantService.findMerchantById(merchant.getId());
+
         merchantService.save(merchant1);
       return new ResponseEntity<>(merchant1, HttpStatus.OK);
 

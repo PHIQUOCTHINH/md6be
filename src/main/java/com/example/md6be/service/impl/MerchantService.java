@@ -31,7 +31,7 @@ public class MerchantService implements IMerchantService {
         return merchantRepository.getWaitingAcceptMerchant();
     }
     @Override
-    public void deleteSeller(Long id) {
+    public void deleteMerchant(Long id) {
         merchantRepository.deleteById(id);
     }
     @Override
@@ -44,7 +44,7 @@ public class MerchantService implements IMerchantService {
     }
 
     @Override
-    public List<Merchant> showActiveSeller(Boolean isActive){
+    public List<Merchant> showActiveMerchant(Boolean isActive){
         return merchantRepository.findMerchantByIsAccept(isActive);
     }
     @Override

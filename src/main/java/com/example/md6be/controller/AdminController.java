@@ -51,13 +51,13 @@ public class AdminController {
     // xoa 1 merchant( co the ko dung)
     @DeleteMapping("/delete/{id}")
     private ResponseEntity<String> deleteMerchant(@PathVariable Long id){
-        merchantService.deleteSeller(id);
+        merchantService.deleteMerchant(id);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
     // show merchant da duoc chap nhan
     @GetMapping("/showMerchant")
     private ResponseEntity<List<Merchant>> showListMerchant() {
-        List<Merchant> merchants = merchantService.showActiveSeller(true);
+        List<Merchant> merchants = merchantService.showActiveMerchant(true);
         return new ResponseEntity<>(merchants, HttpStatus.ACCEPTED);
     }
     // tim merchant theo id

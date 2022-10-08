@@ -11,7 +11,7 @@ public interface IOrderDetailService {
     List<OrderDetail> findOrderDetailByOrder(Order order);
 
 
-    List<OrderDetail> findOrderDetailByOrderId(Long idOrder);
+    List<OrderDetail> findOrder( Long id);
 
 
     OrderDetail findOrderDetailByIdOrderDetail(Long idOrderDetail);
