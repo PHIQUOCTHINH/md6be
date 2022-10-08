@@ -208,6 +208,8 @@ public class OrderController {
 
     @GetMapping("/cancel-order/{idUser}")
     private ResponseEntity<?> cancelOrder(@PathVariable Long idUser ){
+        double total = 0;
+        List<OrderDetail> orderDetailList = new ArrayList<>();
         Optional<AppUser> appUser = appUserService.findByUserId(idUser);
         Customer customer = customerService.findCustomerByAppUser(appUser.get());
         List<CartDetail> cartDetailList = cartDetailService.findAllByUserId(idUser);
@@ -221,15 +223,18 @@ public class OrderController {
         Order order1 = orderService.findLastOrder(customer.getId());
         if (order1 !=null){
             for (CartDetail cartDetail : cartDetailList) {
+                total+= cartDetail.getQuantity()*cartDetail.getFood().getPrice();
                 OrderDetail orderDetail = new OrderDetail();
                 orderDetail.setOrder(order1);
                 orderDetail.setFood(cartDetail.getFood());
                 orderDetail.setPrice(cartDetail.getFood().getPrice());
                 orderDetail.setQuantity(cartDetail.getQuantity());
+                orderDetailList.add(orderDetail);
+                order1.setPriceTotal(total);
                 orderDetailService.save(orderDetail);
                 cartDetailService.delete(cartDetail.getId());
             }
-            return new ResponseEntity<>(true,HttpStatus.OK);
+            return new ResponseEntity<>(orderDetailList,HttpStatus.OK);
         }else {
             return new ResponseEntity<>(false,HttpStatus.NOT_FOUND);
         }

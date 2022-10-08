@@ -1,12 +1,13 @@
 package com.example.md6be.controller;
 
-import com.example.md6be.model.Food;
-import com.example.md6be.model.FoodCategory;
-import com.example.md6be.model.Merchant;
+import com.example.md6be.model.*;
+import com.example.md6be.repository.IOrderDetailRepository;
+import com.example.md6be.repository.IOrderRepository;
 import com.example.md6be.service.impl.FoodCategoryService;
 import com.example.md6be.service.impl.FoodService;
 import com.example.md6be.service.impl.MerchantService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.filter.OrderedRequestContextFilter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,11 @@ public class MerchantController {
 
     @Autowired
     FoodCategoryService foodCategoryService;
+    @Autowired
+    IOrderRepository orderRepository;
+
+    @Autowired
+    IOrderDetailRepository iOrderDetailRepository;
     @GetMapping("/{id}")
     public ResponseEntity<List<Food>> findAll(@PathVariable Long id) {
         return new ResponseEntity<>(foodService.findAllByUserId(id), HttpStatus.OK);
@@ -82,4 +88,23 @@ public class MerchantController {
     public ResponseEntity<List<Food>> findAllByLikeName(@PathVariable("id") Long id, @PathVariable("name") String name) {
         return new ResponseEntity<>(foodService.findFoodByLikeName(id, name), HttpStatus.OK);
     }
+    @GetMapping("/find-order-by-name/{id}/{name}")
+    public ResponseEntity<List<Order>> findAllOrderByLikeName(@PathVariable("id") Long id, @PathVariable("name") String name) {
+        List<Order> orders = orderRepository.findOrderByNameCustomer(id,"%"+name+"%");
+        System.out.println(orders);
+        return new ResponseEntity<>(orders,HttpStatus.OK);
+    }
+
+    @GetMapping("/find-order-detail-by-order_id/{id}")
+    public ResponseEntity<List<OrderDetail>> findAllOrderDetailByOrderId(@PathVariable("id") Long id) {
+        List<OrderDetail> orderDetailList = iOrderDetailRepository.findOrderDetailByOrderId(id);
+        return new ResponseEntity<>(orderDetailList,HttpStatus.OK);
+    }
+
+    @GetMapping("/find-order-detail-by-name-customer/{id}/{name}")
+    public ResponseEntity<List<OrderDetail>> findAllOrderDetailByNameCustomer(@PathVariable("id") Long id,@PathVariable("name") String name) {
+        List<OrderDetail> orderDetailList = iOrderDetailRepository.findOrderDetailByNameCustomer(id,"%"+name+"%");
+        return new ResponseEntity<>(orderDetailList,HttpStatus.OK);
+    }
+
 }

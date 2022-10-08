@@ -41,5 +41,10 @@ public class OrderDetailService implements IOrderDetailService {
         return detailRepository.findById(id);
     }
 
+    @Override
+    public List<OrderDetail> findOrderDetailByNameCustomer(Long id, String name) {
+        return detailRepository.findOrderDetailByNameCustomer(id,name);
+    }
+
 
 }

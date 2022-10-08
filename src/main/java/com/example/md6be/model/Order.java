@@ -21,6 +21,8 @@ public class Order {
     private LocalDateTime createAt;
     @Column(name = "isAccept", columnDefinition = "boolean default false")
     private Boolean isAccept;
+    @Column(name = "isPaid", columnDefinition = "boolean default false")
+    private Boolean isPaid;
     private double priceTotal;
     @ManyToOne
     private Customer customer;

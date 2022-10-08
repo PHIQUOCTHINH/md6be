@@ -82,6 +82,15 @@ public class OrderService implements IOrderService {
         return orderRepository.findLastOrder(id);
     }
 
+    @Override
+    public List<Order> findOrderByPhoneNumber(String phoneNumber) {
+        return orderRepository.findOrderByPhoneNumber(phoneNumber);
+    }
+
+    @Override
+    public List<Order> findOrderByNameCustomer(Long id,String name) {
+        return orderRepository.findOrderByNameCustomer(id ,name);
+    }
 
 
 }

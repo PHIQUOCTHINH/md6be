@@ -42,4 +42,7 @@ public interface IOrderService {
     List<Order> findOrdersConfirmedDateDESC(int id);
 
     Order findLastOrder(Long id);
+    List<Order> findOrderByPhoneNumber(String phoneNumber);
+
+    List<Order> findOrderByNameCustomer(Long id,String name);
 }
