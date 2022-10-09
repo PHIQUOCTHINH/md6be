@@ -32,4 +32,8 @@ public interface IFoodRepository extends JpaRepository<Food,Long> {
 
     @Query(value = "select*from food where merchant_id in (select merchant.id from merchant where is_active = 1 ) and food_category_id= :id", nativeQuery = true)
     List<Food> findAllByFoodCategoryAndAndMerchantIsActive(@Param("id") Long id);
+
+
+    @Query(nativeQuery = true, value = " SELECT * FROM food where (merchant_id in (select merchant.id from merchant where is_accept=1 and is_active=1)) and (food.name like :name)")
+    List<Food> findAllByLikeName(@Param("name") String name);
 }

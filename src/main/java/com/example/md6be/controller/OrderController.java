@@ -231,6 +231,7 @@ public class OrderController {
                 orderDetail.setQuantity(cartDetail.getQuantity());
                 orderDetailList.add(orderDetail);
                 order1.setPriceTotal(total);
+                cartDetail.getFood().setSold(cartDetail.getFood().getSold()+cartDetail.getQuantity());
                 orderDetailService.save(orderDetail);
                 cartDetailService.delete(cartDetail.getId());
             }

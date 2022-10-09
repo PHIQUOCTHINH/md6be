@@ -17,6 +17,6 @@ public class CartDetail {
     private Food food;
     @ManyToOne
     private Merchant merchant;
-    private double quantity;
+    private Long quantity;
     private double totalPrice;
 }

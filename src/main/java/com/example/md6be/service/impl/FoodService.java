@@ -66,6 +66,11 @@ public class FoodService implements IFoodService {
         return foodRepository.findAllByFoodCategoryAndAndMerchantIsActive(id);
     }
 
+    @Override
+    public List<Food> findAllByLikeName(String name) {
+        return foodRepository.findAllByLikeName(name);
+    }
+
     public List<Food> findFoodByMerchant(Merchant merchant) {
         return foodRepository.findFoodByMerchant(merchant);
     }

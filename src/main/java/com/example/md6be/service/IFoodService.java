@@ -19,4 +19,5 @@ public interface IFoodService {
     List<Food> findFoodByLikeName(Long id,String name);
     List<Food> findAllFoodByStatus();
     List<Food> findAllByFoodCategoryAndAndMerchantIsActive( Long id);
+    List<Food> findAllByLikeName(String name);
 }

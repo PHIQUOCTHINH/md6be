@@ -43,4 +43,9 @@ public class CustomerController {
         return new ResponseEntity<>(foodService.findAllByFoodCategoryAndAndMerchantIsActive(id),HttpStatus.OK);
     }
 
+    @GetMapping("/find-all-by-like-name/{name}")
+    private ResponseEntity<List<Food>> findFoodByLikeName(@PathVariable("name") String name){
+        return new ResponseEntity<>(foodService.findAllByLikeName("%"+name+"%"),HttpStatus.OK);
+    }
+
 }
