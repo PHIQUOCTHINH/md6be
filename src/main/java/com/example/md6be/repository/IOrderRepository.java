@@ -31,9 +31,9 @@ public interface IOrderRepository extends JpaRepository<Order,Long> {
     @Query(nativeQuery = true, value = "update md6_case.orders set orders.order_status_id = 2 where orders.id =:idOrder")
     void confirmOrder(Long idOrder);
 
-    @Query(nativeQuery = true, value = "SELECT * FROM md6_case.orders where customer_id =:idCustomer ;")
-    List<Order> findOrdersByCustomerId (Long idCustomer);
-    List<Order> findOrderByCustomerId(Long id);
+    @Query(nativeQuery = true, value = "SELECT * FROM md6_case.orders where customer_id =(select id from customer where user_id = :id) and is_accept =0;")
+    List<Order> findWaitingOrdersByCustomerId (@Param("id") Long id);
+//    List<Order> findOrderByCustomerId(Long id);
     @Query(nativeQuery = true, value = "SELECT * FROM md6_case.orders where order_status_id =:id order by price_total asc;")
     List<Order> findOrdersConfirmedASC(int id);
 
@@ -56,6 +56,9 @@ public interface IOrderRepository extends JpaRepository<Order,Long> {
 
     @Query(nativeQuery = true, value = "SELECT * FROM md6_case.orders where merchant_id=(select id from merchant where user_id= :id) and customer_id in (select id from customer where name like :name) ")
     List<Order> findOrderByNameCustomer(@Param("id") Long id,@Param("name") String name);
+    @Query(nativeQuery = true, value = "SELECT * FROM md6_case.orders where customer_id =(select id from customer where user_id = :id) and is_accept =1 and is_paid = 0;")
+    List<Order> findAcceptedOrdersByCustomerId (@Param("id") Long id);
+
 
 
 }

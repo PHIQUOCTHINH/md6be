@@ -48,14 +48,11 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public List<Order> findOrdersByCustomerId(Long idCustomer) {
-        return orderRepository.findOrdersByCustomerId(idCustomer);
+    public List<Order> findWaitingOrdersByCustomerId(Long idCustomer) {
+        return orderRepository.findWaitingOrdersByCustomerId(idCustomer);
     }
 
-    @Override
-    public List<Order> findOrderByCustomerId(Long id) {
-        return orderRepository.findOrderByCustomerId(id);
-    }
+
 
     @Override
     public List<Order> findOrdersConfirmedASC(int id) {
@@ -90,6 +87,13 @@ public class OrderService implements IOrderService {
     @Override
     public List<Order> findOrderByNameCustomer(Long id,String name) {
         return orderRepository.findOrderByNameCustomer(id ,name);
+    }
+    public void delete(Long id){
+        orderRepository.deleteById(id);
+    }
+
+    public List<Order> findAcceptedOrdersByCustomerId(Long id){
+        return orderRepository.findAcceptedOrdersByCustomerId(id);
     }
 
 

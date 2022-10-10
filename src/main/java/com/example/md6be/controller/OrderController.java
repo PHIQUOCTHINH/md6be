@@ -1,6 +1,7 @@
 package com.example.md6be.controller;
 
 import com.example.md6be.model.*;
+import com.example.md6be.service.IFoodService;
 import com.example.md6be.service.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,8 @@ public class OrderController {
     AppUserService appUserService;
     @Autowired
     OrderDetailService orderDetailService;
+    @Autowired
+    FoodService foodService;
 //// tạo cart ứng với id customer, mỗi customer có 1 cart
 //    @PostMapping("/save-cart")
 //    public ResponseEntity<Cart> saveCart(@RequestBody Customer customer){
@@ -153,8 +156,11 @@ public class OrderController {
     }
     @PostMapping("/item")
     private ResponseEntity<CartDetail> createItem(@RequestBody CartDetail cartDetail){
+        Cart cart = cartService.findAllByCustomerId(cartDetail.getCart().getId());
+        cartDetail.setCart(cart);
         return new ResponseEntity<>(cartDetailService.save(cartDetail),HttpStatus.CREATED);
     }
+
     @PutMapping("/item")
     private ResponseEntity<CartDetail> updateProduct(@RequestBody CartDetail cartDetail){
         Optional<CartDetail> optionalCartDetail = cartDetailService.findById(cartDetail.getId());
@@ -166,6 +172,7 @@ public class OrderController {
 
     @GetMapping("/create-order/{idUser}")
     private ResponseEntity<?> createOrder(@PathVariable Long idUser ){
+        double total = 0;
         Optional<AppUser> appUser = appUserService.findByUserId(idUser);
         Customer customer = customerService.findCustomerByAppUser(appUser.get());
         List<CartDetail> cartDetailList = cartDetailService.findAllByUserId(idUser);
@@ -182,11 +189,15 @@ public class OrderController {
         Order order1 = orderService.findLastOrder(customer.getId());
         if (order1 !=null){
             for (CartDetail cartDetail : cartDetailList) {
+                total+= cartDetail.getQuantity()*cartDetail.getFood().getPrice();
                 OrderDetail orderDetail = new OrderDetail();
                 orderDetail.setOrder(order1);
                 orderDetail.setFood(cartDetail.getFood());
                 orderDetail.setPrice(cartDetail.getFood().getPrice());
                 orderDetail.setQuantity(cartDetail.getQuantity());
+                order1.setPriceTotal(total);
+                cartDetail.getFood().setSold(cartDetail.getFood().getSold()+cartDetail.getQuantity());
+                foodService.save(cartDetail.getFood());
                 orderDetailService.save(orderDetail);
                 cartDetailService.delete(cartDetail.getId());
             }
@@ -195,50 +206,23 @@ public class OrderController {
             return new ResponseEntity<>(false,HttpStatus.NOT_FOUND);
         }
     }
-//    @GetMapping("/cancel-order/{idUser}")
-//    private ResponseEntity<?> cancelOrder(@PathVariable Long idUser){
-//        Optional<AppUser> appUser = appUserService.findByUserId(idUser);
-//        Customer customer = customerService.findCustomerByAppUser(appUser.get());
-//
-//    }
-//    @PutMapping("/update-all-cartDetail")
-//    private ResponseEntity<?> updateAllCartDetail(@RequestBody Iterable<CartDetail> cartDetailList){
-//        if ()
-//    }
 
-    @GetMapping("/cancel-order/{idUser}")
-    private ResponseEntity<?> cancelOrder(@PathVariable Long idUser ){
-        double total = 0;
-        List<OrderDetail> orderDetailList = new ArrayList<>();
-        Optional<AppUser> appUser = appUserService.findByUserId(idUser);
-        Customer customer = customerService.findCustomerByAppUser(appUser.get());
-        List<CartDetail> cartDetailList = cartDetailService.findAllByUserId(idUser);
-        Merchant merchant = cartDetailList.get(0).getFood().getMerchant();
-        Order order = new Order();
-        order.setCreateAt(LocalDateTime.now());
-        order.setCustomer(customer);
-        order.setMerchant(merchant);
-        order.setIsAccept(false);
-        orderService.save(order);
-        Order order1 = orderService.findLastOrder(customer.getId());
-        if (order1 !=null){
-            for (CartDetail cartDetail : cartDetailList) {
-                total+= cartDetail.getQuantity()*cartDetail.getFood().getPrice();
-                OrderDetail orderDetail = new OrderDetail();
-                orderDetail.setOrder(order1);
-                orderDetail.setFood(cartDetail.getFood());
-                orderDetail.setPrice(cartDetail.getFood().getPrice());
-                orderDetail.setQuantity(cartDetail.getQuantity());
-                orderDetailList.add(orderDetail);
-                order1.setPriceTotal(total);
-                cartDetail.getFood().setSold(cartDetail.getFood().getSold()+cartDetail.getQuantity());
-                orderDetailService.save(orderDetail);
-                cartDetailService.delete(cartDetail.getId());
-            }
-            return new ResponseEntity<>(orderDetailList,HttpStatus.OK);
-        }else {
-            return new ResponseEntity<>(false,HttpStatus.NOT_FOUND);
-        }
+
+    @GetMapping("/cancel-order/{id}")
+    private ResponseEntity<?> cancelOrder(@PathVariable Long id ){
+        List<OrderDetail> orderDetailList = orderDetailService.findOrderDetailByOrderId(id);
+        orderDetailService.deleteByOrderId(orderDetailList);
+        orderService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @GetMapping("/find-order-by-customer/{id}")
+    private ResponseEntity<List<Order>> findAllOrderByCustomer(@PathVariable("id") Long id){
+        return new ResponseEntity<>(orderService.findWaitingOrdersByCustomerId(id),HttpStatus.OK);
+    }
+
+    @GetMapping("/find-order-accepted-by-customer/{id}")
+    private ResponseEntity<List<Order>> findAllOrderAcceptedByCustomer(@PathVariable("id") Long id){
+        return new ResponseEntity<>(orderService.findAcceptedOrdersByCustomerId(id),HttpStatus.OK);
+    }
 }

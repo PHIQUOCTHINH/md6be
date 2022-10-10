@@ -5,6 +5,7 @@ import com.example.md6be.service.IAddressService;
 import com.example.md6be.service.IAppUserService;
 import com.example.md6be.service.ICustomerService;
 import com.example.md6be.service.IMerchantService;
+import com.example.md6be.service.impl.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,9 @@ public class LoginController {
     IAddressService addressService;
     @Autowired
     IMerchantService merchantService;
+
+    @Autowired
+    CartService cartService;
     @GetMapping
     public ResponseEntity<List<AppUser>>findAll() {
         return new ResponseEntity<>(appUserService.findAll(), HttpStatus.OK);
@@ -72,7 +76,9 @@ public class LoginController {
         }else {
             appUserService.save(customer.getAppUser());
             customerService.save(customer);
-
+            Cart cart = new Cart();
+            cart.setCustomer(customer);
+            cartService.save(cart);
             Customer customer1 = customerService.findCustomerByUserName(customer.getAppUser().getUsername());
             Address address = new Address();
             address.setNameAddress(customer1.getAddress());

@@ -26,9 +26,9 @@ public interface IOrderService {
     void confirmOrder(Long idOrder);
 
 
-    List<Order> findOrdersByCustomerId (Long idCustomer);
+    List<Order> findWaitingOrdersByCustomerId (Long idCustomer);
 
-    List<Order> findOrderByCustomerId(Long id);
+//    List<Order> findOrderByCustomerId(Long id);
 
     List<Order> findOrdersConfirmedASC(int id);
 

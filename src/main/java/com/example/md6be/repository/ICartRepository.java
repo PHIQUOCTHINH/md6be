@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface ICartRepository extends JpaRepository<Cart,Long> {
-    @Query(value = "select*from carts where customer_id in (select customer.id from customer where user_id =?1);", nativeQuery = true)
-    List<Cart> findCartByCustomerId(Long id);
+    @Query(value = "select*from cart where customer_id in (select customer.id from customer where user_id =?1);", nativeQuery = true)
+    Cart findCartByCustomerId(Long id);
 }

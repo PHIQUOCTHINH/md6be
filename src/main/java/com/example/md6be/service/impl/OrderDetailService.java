@@ -46,5 +46,9 @@ public class OrderDetailService implements IOrderDetailService {
         return detailRepository.findOrderDetailByNameCustomer(id,name);
     }
 
+    public void deleteByOrderId(List<OrderDetail> orderDetailList){
+        detailRepository.deleteAll(orderDetailList);
+    }
+
 
 }
