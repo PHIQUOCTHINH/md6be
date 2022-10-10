@@ -225,4 +225,13 @@ public class OrderController {
     private ResponseEntity<List<Order>> findAllOrderAcceptedByCustomer(@PathVariable("id") Long id){
         return new ResponseEntity<>(orderService.findAcceptedOrdersByCustomerId(id),HttpStatus.OK);
     }
+
+    @GetMapping("/pay-order/{id}")
+    private ResponseEntity<?> payOrder(@PathVariable("id") Long id){
+        Order order = orderService.findOrderById(id);
+        order.setIsPaid(true);
+        orderService.save(order);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }
