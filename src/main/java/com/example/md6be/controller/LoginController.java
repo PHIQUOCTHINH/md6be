@@ -25,6 +25,8 @@ public class LoginController {
     IAddressService addressService;
     @Autowired
     IMerchantService merchantService;
+    @Autowired
+    SendMailController sendMailController;
     @GetMapping
     public ResponseEntity<List<AppUser>>findAll() {
         return new ResponseEntity<>(appUserService.findAll(), HttpStatus.OK);
@@ -78,6 +80,7 @@ public class LoginController {
             address.setNameAddress(customer1.getAddress());
             address.setCustomer(customer1);
             addressService.save(address);
+            sendMailController.sendEmailC(customer);
             return new ResponseEntity<>(customer.getAppUser(), HttpStatus.OK);
         }
 
@@ -91,6 +94,7 @@ public class LoginController {
         }else {
             appUserService.save(merchant.getAppUser());
             merchantService.save(merchant);
+
             return new ResponseEntity<>(merchant.getAppUser(), HttpStatus.OK);
         }
     }

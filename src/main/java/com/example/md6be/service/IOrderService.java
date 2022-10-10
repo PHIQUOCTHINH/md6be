@@ -39,4 +39,10 @@ public interface IOrderService {
     List<Order> findOrdersByUserId ( Long id);
     void delete(long id);
 
+
+    Order findLastOrder(Long id);
+    List<Order> findOrderByPhoneNumber(String phoneNumber);
+
+    List<Order> findOrderByNameCustomer(Long id,String name);
+
 }

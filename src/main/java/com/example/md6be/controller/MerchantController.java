@@ -1,11 +1,7 @@
 package com.example.md6be.controller;
 
-import com.example.md6be.model.Food;
-import com.example.md6be.model.FoodCategory;
-import com.example.md6be.model.Merchant;
-import com.example.md6be.service.impl.FoodCategoryService;
-import com.example.md6be.service.impl.FoodService;
-import com.example.md6be.service.impl.MerchantService;
+import com.example.md6be.model.*;
+import com.example.md6be.service.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +20,10 @@ public class MerchantController {
     MerchantService merchantService;
     @Autowired
     FoodCategoryService foodCategoryService;
+    @Autowired
+    OrderService orderRepository;
+    @Autowired
+    OrderDetailService iOrderDetailService;
    // hiển thị danh sach món của chính merchant
     @GetMapping("/{id}")
     public ResponseEntity<List<Food>> findAll(@PathVariable Long id) {
@@ -96,13 +96,34 @@ public ResponseEntity<?> update(@RequestBody Food food) {
         return new ResponseEntity<>(merchant, HttpStatus.OK);
     }
     @PutMapping("/update-merchant")
-    public ResponseEntity<Merchant> update(@RequestBody Merchant merchant) {
-        Merchant merchant1  = merchantService.findByAppUserId(merchant.getAppUser().getId());
-//        Optional<Merchant> merchant1 = merchantService.findMerchantById(merchant.getId());
-
-        merchantService.save(merchant1);
-      return new ResponseEntity<>(merchant1, HttpStatus.OK);
-
+    public ResponseEntity<?> update(@RequestBody Merchant merchant) {
+Optional<Merchant> merchant2 = Optional.ofNullable(merchantService.findByAppUserId(merchant.getAppUser().getId()));
+if (merchant2.isPresent()){
+    merchant.setId(merchant2.get().getId());;
+    merchant.setIsActive(merchant2.get().getIsActive());
+    merchant.setIsAccept(merchant2.get().getIsAccept());
+    merchant.setAvatar(merchant2.get().getAvatar());
+    merchant.setImageBanner(merchant2.get().getImageBanner());
+    merchantService.save(merchant);
+    return new ResponseEntity<>(merchant,HttpStatus.OK);
+}
+return null;
+    }
+    @GetMapping("/find-order-by-name/{id}/{name}")
+    public ResponseEntity<List<Order>> findAllOrderByLikeName(@PathVariable("id") Long id, @PathVariable("name") String name) {
+        List<Order> orders = orderRepository.findOrderByNameCustomer(id,"%"+name+"%");
+        System.out.println(orders);
+        return new ResponseEntity<>(orders,HttpStatus.OK);
     }
 
+    @GetMapping("/find-order-detail-by-name-customer/{id}/{name}")
+    public ResponseEntity<List<OrderDetail>> findAllOrderDetailByNameCustomer(@PathVariable("id") Long id,@PathVariable("name") String name) {
+        List<OrderDetail> orderDetailList = iOrderDetailService.findOrderDetailByNameCustomer(id,"%"+name+"%");
+        return new ResponseEntity<>(orderDetailList,HttpStatus.OK);
+    }
+    @GetMapping("find-order-detail-by-user-id/{id}")
+    public  ResponseEntity<List<OrderDetail>> findOrderDetailByUserId(@PathVariable Long id){
+        List<OrderDetail> orderDetails = iOrderDetailService.findOrderDetailByUserId(id);
+        return new ResponseEntity<>(orderDetails,HttpStatus.OK);
+    }
 }

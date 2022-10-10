@@ -23,16 +23,17 @@ public class SendMailController {
     @Autowired
     AppUserService appUserService;
 // send mail cho merchant
-    public void sendEmail(AppUser appUser) {
+    public void sendEmail(Merchant merchant) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate dayPlusAWeek = LocalDate.now().plusDays(0);
         String day = formatter.format(dayPlusAWeek);
 
         SimpleMailMessage message = new SimpleMailMessage();
 
-        message.setTo(appUser.getUsername());
+        message.setTo(merchant.getAppUser().getUsername());
         message.setSubject("Thông báo đăng ký thành công "  + day);
-        message.setText("Chào bạn \n" + appUser.getUsername()
+        message.setText("Chào bạn " +"Hãy nhấn vào link dưới đây để kich hoạt tài khoản" +"http://localhost:8080/api/admin/accept-merchant/"+ merchant.getId() + "\n"
+
                 + "Trưa nay ăn gì! xin thông báo, vào ngày " + day
                 + " bạn đã chính thức trở thành một thành viên tham gia Ứng dụng Trưa nay ăn gì!"
                 + " cùng chung tay xây dựng Trưa nay ăn gì! ngày càng phát triển nhé! \n"
@@ -68,17 +69,24 @@ public class SendMailController {
 
     }
     //send mail cho customer
-    public void sendEmailC(AppUser appUser) {
+    public void sendEmailC(Customer customer) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate dayPlusAWeek = LocalDate.now().plusDays(0);
         String day = formatter.format(dayPlusAWeek);
 
         SimpleMailMessage message = new SimpleMailMessage();
 
-        message.setTo(appUser.getUsername());
+        message.setTo(customer.getAppUser().getUsername());
         message.setSubject("Thông báo đăng ký thành công" + day);
-        message.setText("Xin chào \n" + appUser.getUsername()
-                + "Bạn đã trờ thành thành viên");
+        message.setText("Chào bạn " +"Hãy nhấn vào link dưới đây để kich hoạt tài khoản" +"http://localhost:8080/api/admin/accept-merchant/"+ customer.getId() + "\n"
+
+                + "Trưa nay ăn gì! xin thông báo, vào ngày " + day
+                + " bạn đã chính thức trở thành một thành viên tham gia Ứng dụng Trưa nay ăn gì!"
+                + " cùng chung tay xây dựng Trưa nay ăn gì! ngày càng phát triển nhé! \n"
+                + "Mọi thắc mắc xin liên hệ: \n"
+                + "Hotline: 0888 666 888 \n"
+                + "Email: okanemochininaru98@gmail.com.com"
+        );
 
         //send message
         this.emailSender.send(message);

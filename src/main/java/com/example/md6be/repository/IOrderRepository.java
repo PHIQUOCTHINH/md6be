@@ -43,5 +43,16 @@ public interface IOrderRepository extends JpaRepository<Order,Long> {
 
     @Query(nativeQuery = true, value = "SELECT * FROM md6_case.orders where order_status_id =:id order by create_at desc;")
     List<Order> findOrdersConfirmedDateDESC(int id);
+
+
+    @Query(nativeQuery = true, value = "SELECT * FROM md6_case.orders where orders.id =(select max(id) from md6_case.orders) and customer_id = :id ")
+    Order findLastOrder(@Param("id")Long id);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM md6_case.orders where merchant_id=(select id from merchant where user_id= ?1) and customer_id in (select id from customer where phone_number = ?1) ")
+    List<Order> findOrderByPhoneNumber(String phoneNumber);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM md6_case.orders where merchant_id=(select id from merchant where user_id= :id) and customer_id in (select id from customer where name like :name) ")
+    List<Order> findOrderByNameCustomer(@Param("id") Long id,@Param("name") String name);
+
 }
 

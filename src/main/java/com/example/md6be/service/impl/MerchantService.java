@@ -70,7 +70,7 @@ public class MerchantService implements IMerchantService {
 
     @Override
     public List<Merchant> findMerchantByPhoneNumber(String numberPhone) {
-        return merchantRepository.findByPhone(numberPhone);
+        return merchantRepository.findByPhone( numberPhone);
     }
 
     public Merchant findByAppUserId(Long id){

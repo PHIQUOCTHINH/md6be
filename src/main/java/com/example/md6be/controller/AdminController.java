@@ -39,14 +39,14 @@ public class AdminController {
     }
     //chap nhan merchant
 
-    @PostMapping("/accept-merchant/{id}")
-    private ResponseEntity<Merchant> acceptMerchant(@PathVariable Long id ){
+    @GetMapping("/accept-merchant/{id}")
+    private ResponseEntity<?> acceptMerchant(@PathVariable Long id ){
         Optional<Merchant> merchant = merchantService.findById(id);
         Merchant newMerchant = merchant.get();
         newMerchant.setIsAccept(true);
         merchantService.save(newMerchant);
-        sendMailController.sendEmail(newMerchant.getAppUser());
-        return new ResponseEntity<>(newMerchant,HttpStatus.CREATED) ;
+        sendMailController.sendEmail(newMerchant);
+        return new ResponseEntity<>(HttpStatus.CREATED) ;
     }
     // xoa 1 merchant( co the ko dung)
     @DeleteMapping("/delete/{id}")
@@ -99,13 +99,13 @@ public class AdminController {
         return new ResponseEntity<>(customers,HttpStatus.OK);
     }
     // chấp nhận tài khoản customer
-    @PostMapping("/accept-customer/{id}")
+    @GetMapping("/accept-customer/{id}")
     private ResponseEntity<Customer> acceptCustomer(@PathVariable Long id ){
         Optional<Customer> customer = customerService.findCustomerById(id);
         Customer newCustomer = customer.get();
         newCustomer.setIsAccept(true);
         customerService.save(newCustomer);
-        sendMailController.sendEmailC(customer.get().getAppUser());
+        sendMailController.sendEmailC(customer.get());
         return new ResponseEntity<>(newCustomer,HttpStatus.CREATED) ;
     }
     // hiển thị list customer đang đợi accept
@@ -144,8 +144,8 @@ public class AdminController {
         return new ResponseEntity<>(customer,HttpStatus.ACCEPTED);
     }
     @GetMapping("/find-merchant-by-phone-number/{phone}")
-    public ResponseEntity< List<Merchant>> findByNumberPhone(@PathVariable String phone){
-        List<Merchant> merchants = merchantService.findMerchantByPhoneNumber(phone);
+    public ResponseEntity< List<Merchant>> findByNumberPhone(@PathVariable("phone") String phone){
+        List<Merchant> merchants = merchantService.findMerchantByPhoneNumber( "%" +phone + "%");
       return new ResponseEntity<>(merchants,HttpStatus.OK);
     }
 }

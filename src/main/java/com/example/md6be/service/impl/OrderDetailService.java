@@ -6,6 +6,7 @@ import com.example.md6be.model.OrderDetail;
 import com.example.md6be.repository.IOrderDetailRepository;
 import com.example.md6be.service.IOrderDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,4 +41,14 @@ public class OrderDetailService implements IOrderDetailService {
     public Optional<OrderDetail> findById(Long id) {
         return detailRepository.findById(id);
     }
+    @Override
+    public List<OrderDetail> findOrderDetailByNameCustomer(Long id, String name) {
+        return detailRepository.findOrderDetailByNameCustomer(id,name);
+    }
+
+    @Override
+    public List<OrderDetail> findOrderDetailByUserId(Long id) {
+        return detailRepository.findOrderDetailByUserId(id);
+    }
+
 }
