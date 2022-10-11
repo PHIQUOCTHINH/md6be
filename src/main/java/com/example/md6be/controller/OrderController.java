@@ -196,6 +196,8 @@ public class OrderController {
                 orderDetail.setPrice(cartDetail.getFood().getPrice());
                 orderDetail.setQuantity(cartDetail.getQuantity());
                 order1.setPriceTotal(total);
+                order1.setIsPaid(false);
+                orderService.save(order1);
                 cartDetail.getFood().setSold(cartDetail.getFood().getSold()+cartDetail.getQuantity());
                 foodService.save(cartDetail.getFood());
                 orderDetailService.save(orderDetail);
@@ -234,4 +236,8 @@ public class OrderController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @GetMapping("/find-order-detail-by-order/{id}")
+    private ResponseEntity<List<OrderDetail>> findAllOrderDetailByOrderId(@PathVariable("id") Long id){
+        return new ResponseEntity<>(orderDetailService.findOrderDetailByOrderId(id),HttpStatus.OK);
+    }
 }
