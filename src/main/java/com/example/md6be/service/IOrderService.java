@@ -48,4 +48,5 @@ public interface IOrderService {
     List<Order> findOrderByNameCustomer(Long id,String name);
     List<Order> findPaidOrdersByCustomerId (Long id);
     List<Order> findOrderByCreateAt(String from,String to);
+    List<Order> findAllPaidOrders(Long id);
 }

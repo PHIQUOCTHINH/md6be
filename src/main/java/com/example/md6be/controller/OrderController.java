@@ -250,4 +250,14 @@ public class OrderController {
         return new ResponseEntity<>(orderService.findOrderByCreateAt(from,to),HttpStatus.OK);
     }
 
+    @GetMapping("/find-all-order-paid/{id}")
+    private ResponseEntity<?> findAllOrderPaid(@PathVariable("id") Long id){
+        List<Order> orders = orderService.findAllPaidOrders(id);
+        double totalPrice = 0;
+        for (Order order : orders) {
+            totalPrice += order.getPriceTotal();
+        }
+        return new ResponseEntity<>(totalPrice,HttpStatus.OK);
+    }
+
 }
