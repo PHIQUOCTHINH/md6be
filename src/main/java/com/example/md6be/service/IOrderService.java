@@ -17,7 +17,7 @@ public interface IOrderService {
 
     List<Order> findOrderConfirmedByMerchantId(long id);
 
-    Optional<Order> findOrderById(Long id);
+    Order findOrderById(Long id);
 
     void confirmOrder(Long idOrder);
 
@@ -44,5 +44,5 @@ public interface IOrderService {
     List<Order> findOrderByPhoneNumber(String phoneNumber);
 
     List<Order> findOrderByNameCustomer(Long id,String name);
-
+    List<Order> findWaitingOrdersByCustomerId (Long idCustomer);
 }

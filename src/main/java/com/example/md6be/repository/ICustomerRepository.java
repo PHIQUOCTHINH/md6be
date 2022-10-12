@@ -29,4 +29,5 @@ public interface ICustomerRepository extends JpaRepository<Customer,Long> {
     @Query(nativeQuery = true, value = "select * from customer where is_accept = false;")
     List<Customer> getWaitingAcceptCustomer();
     List<Customer> findCustomerByIsAccept(Boolean isAccept);
+    Customer findCustomerByAppUserContaining (String userName);
 }

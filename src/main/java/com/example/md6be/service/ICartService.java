@@ -13,5 +13,5 @@ public interface ICartService {
 
     Optional<Cart> findById(Long id);
 
-    List<Cart> findAllByCustomerId(Long id);
+    Cart findAllByCustomerId(Long id);
 }

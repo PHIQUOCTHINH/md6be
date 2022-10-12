@@ -16,8 +16,17 @@ public class CartDetailService implements ICartDetailService {
 
     @Override
     public CartDetail save(CartDetail cartDetail) {
+        List<CartDetail> cartDetailList = findAllByCartId(cartDetail.getCart().getId());
+        for (CartDetail detail : cartDetailList) {
+            if (detail.getFood().getId()==(cartDetail.getFood().getId())) {
+                detail.setQuantity(detail.getQuantity() + cartDetail.getQuantity());
+                return cartDetailRepository.save(detail);
+            }
+        }
+
         return cartDetailRepository.save(cartDetail);
     }
+
 
     @Override
     public List<CartDetail> getAll() {
@@ -63,5 +72,10 @@ public class CartDetailService implements ICartDetailService {
         if (getItemById(id,idCustomer) != null){
             delete(id);
         }
+    }
+
+    @Override
+    public List<CartDetail> findAllByCartId(Long id) {
+        return cartDetailRepository.findAllByCartId(id);
     }
 }

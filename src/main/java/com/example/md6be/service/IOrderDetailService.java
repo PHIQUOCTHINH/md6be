@@ -20,4 +20,14 @@ public interface IOrderDetailService {
     Optional<OrderDetail> findById(Long id);
     List<OrderDetail> findOrderDetailByNameCustomer(Long id,String name);
     List<OrderDetail> findOrderDetailByUserId(@Param("id") Long id);
+
+
+
+
+
+    List<OrderDetail> findOrderDetailByOrderId(Long idOrder);
+
+
+
+
 }

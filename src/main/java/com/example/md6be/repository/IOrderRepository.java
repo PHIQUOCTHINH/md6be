@@ -16,6 +16,7 @@ import java.util.List;
 public interface IOrderRepository extends JpaRepository<Order,Long> {
     List<Order> findOrderByMerchant(Merchant merchant);
 
+
     @Query(nativeQuery = true, value = "SELECT * FROM md6_case.orders where order_status_id = 1;")
     List<Order> findOrderByMerchantId(long id);
 
@@ -23,15 +24,17 @@ public interface IOrderRepository extends JpaRepository<Order,Long> {
     List<Order> findOrderConfirmedByMerchantId(long id);
 
     Order findOrderById(Long id);
+
     @Modifying
     @Transactional
     @Query(nativeQuery = true, value = "update md6_case.orders set orders.order_status_id = 2 where orders.id =:idOrder")
     void confirmOrder(Long idOrder);
 
     @Query(nativeQuery = true, value = "select*from orders where merchant_id in (select merchant.id from merchant where user_id =:id)")
-    List<Order> findOrdersByUserId (@Param("id") Long id);
+    List<Order> findOrdersByUserId(@Param("id") Long id);
 
     List<Order> findOrderByCustomerId(Long id);
+
     @Query(nativeQuery = true, value = "SELECT * FROM md6_case.orders where order_status_id =:id order by price_total asc;")
     List<Order> findOrdersConfirmedASC(int id);
 
@@ -46,13 +49,15 @@ public interface IOrderRepository extends JpaRepository<Order,Long> {
 
 
     @Query(nativeQuery = true, value = "SELECT * FROM md6_case.orders where orders.id =(select max(id) from md6_case.orders) and customer_id = :id ")
-    Order findLastOrder(@Param("id")Long id);
+    Order findLastOrder(@Param("id") Long id);
 
     @Query(nativeQuery = true, value = "SELECT * FROM md6_case.orders where merchant_id=(select id from merchant where user_id= ?1) and customer_id in (select id from customer where phone_number = ?1) ")
     List<Order> findOrderByPhoneNumber(String phoneNumber);
 
     @Query(nativeQuery = true, value = "SELECT * FROM md6_case.orders where merchant_id=(select id from merchant where user_id= :id) and customer_id in (select id from customer where name like :name) ")
-    List<Order> findOrderByNameCustomer(@Param("id") Long id,@Param("name") String name);
-
+    List<Order> findOrderByNameCustomer(@Param("id") Long id, @Param("name") String name);
+    @Query(nativeQuery = true, value = "SELECT * FROM md6_case.orders where customer_id =(select id from customer where user_id = :id) and is_accept =0;")
+    List<Order> findWaitingOrdersByCustomerId (@Param("id") Long id);
+    @Query(nativeQuery = true, value = "SELECT * FROM md6_case.orders where customer_id =(select id from customer where user_id = :id) and is_accept =1 and is_paid = 0;")
+    List<Order> findAcceptedOrdersByCustomerId (@Param("id") Long id);
 }
-

@@ -33,7 +33,7 @@ public class CartService implements ICartService {
         return cartRepository.findById(id);
     }
     @Override
-    public List<Cart> findAllByCustomerId(Long id) {
+    public Cart findAllByCustomerId(Long id) {
         return cartRepository.findCartByCustomerId(id);
     }
 }

@@ -37,8 +37,8 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public Optional<Order> findOrderById(Long id) {
-        return orderRepository.findById(id);
+    public Order findOrderById(Long id) {
+        return orderRepository.findOrderById(id);
     }
 
     @Override
@@ -100,4 +100,11 @@ public class OrderService implements IOrderService {
         return orderRepository.findOrderByNameCustomer(id ,name);
     }
 
+    @Override
+    public List<Order> findWaitingOrdersByCustomerId(Long idCustomer) {
+        return orderRepository.findWaitingOrdersByCustomerId(idCustomer);
+    }
+    public List<Order> findAcceptedOrdersByCustomerId(Long id){
+        return orderRepository.findAcceptedOrdersByCustomerId(id);
+    }
 }

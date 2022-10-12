@@ -5,6 +5,7 @@ import com.example.md6be.service.IAddressService;
 import com.example.md6be.service.IAppUserService;
 import com.example.md6be.service.ICustomerService;
 import com.example.md6be.service.IMerchantService;
+import com.example.md6be.service.impl.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,9 @@ public class LoginController {
 
     @Autowired
     ICustomerService customerService;
+
+    @Autowired
+    CartService cartService;
     @Autowired
     IAddressService addressService;
     @Autowired
@@ -41,6 +45,7 @@ public class LoginController {
                     return new ResponseEntity<>(appUser1, HttpStatus.OK);
                 }else if (role.getName().equals("ROLE_CUSTOMER")){
                     Customer customer = customerService.findCustomerByAppUser(appUser1);
+
                     System.out.println(customer);
                     if (customer.getIsActive() && customer.getIsAccept()){
                         return new ResponseEntity<>(appUser1, HttpStatus.OK);
@@ -74,7 +79,9 @@ public class LoginController {
         }else {
             appUserService.save(customer.getAppUser());
             customerService.save(customer);
-
+            Cart cart = new Cart();
+            cart.setCustomer(customer);
+            cartService.save(cart);
             Customer customer1 = customerService.findCustomerByUserName(customer.getAppUser().getUsername());
             Address address = new Address();
             address.setNameAddress(customer1.getAddress());

@@ -39,7 +39,7 @@ public class AdminController {
     }
     //chap nhan merchant
 
-    @GetMapping("/accept-merchant/{id}")
+    @PostMapping("/accept-merchant/{id}")
     private ResponseEntity<?> acceptMerchant(@PathVariable Long id ){
         Optional<Merchant> merchant = merchantService.findById(id);
         Merchant newMerchant = merchant.get();
@@ -99,7 +99,7 @@ public class AdminController {
         return new ResponseEntity<>(customers,HttpStatus.OK);
     }
     // chấp nhận tài khoản customer
-    @GetMapping("/accept-customer/{id}")
+    @PostMapping("/accept-customer/{id}")
     private ResponseEntity<Customer> acceptCustomer(@PathVariable Long id ){
         Optional<Customer> customer = customerService.findCustomerById(id);
         Customer newCustomer = customer.get();

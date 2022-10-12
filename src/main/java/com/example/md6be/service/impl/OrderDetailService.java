@@ -51,4 +51,12 @@ public class OrderDetailService implements IOrderDetailService {
         return detailRepository.findOrderDetailByUserId(id);
     }
 
+    @Override
+    public List<OrderDetail> findOrderDetailByOrderId(Long idOrder) {
+        return detailRepository.findOrderDetailByOrderId(idOrder);
+    }
+
+    public void deleteByOrderId(List<OrderDetail> orderDetailList){
+        detailRepository.deleteAll(orderDetailList);
+    }
 }

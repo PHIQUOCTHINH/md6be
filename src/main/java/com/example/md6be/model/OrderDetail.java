@@ -15,7 +15,7 @@ public class OrderDetail {
     private Food food;
     @ManyToOne
     private Order order;
-    private double quantity;
+    private Long quantity;
     private double price;
 
 }

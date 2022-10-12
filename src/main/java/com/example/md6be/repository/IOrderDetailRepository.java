@@ -29,4 +29,6 @@ public interface IOrderDetailRepository extends JpaRepository<OrderDetail,Long> 
 
     @Query(nativeQuery = true, value = "SELECT * FROM md6_case.orderdetails where order_id in (select id from md6_case.orders where merchant_id in (select id from merchant where user_id =:id))")
     List<OrderDetail> findOrderDetailByUserId(@Param("id") Long id);
+
+
 }
