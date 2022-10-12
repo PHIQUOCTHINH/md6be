@@ -6,6 +6,7 @@ import com.example.md6be.model.Order;
 import com.example.md6be.repository.IOrderRepository;
 import com.example.md6be.service.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -95,6 +96,12 @@ public class OrderService implements IOrderService {
     public List<Order> findAcceptedOrdersByCustomerId(Long id){
         return orderRepository.findAcceptedOrdersByCustomerId(id);
     }
-
-
+    @Override
+    public List<Order> findPaidOrdersByCustomerId (@Param("id") Long id){
+        return orderRepository.findPaidOrdersByCustomerId(id);
+    }
+    @Override
+    public List<Order>findOrderByCreateAt(String from,String to){
+        return orderRepository.findOrderByCreateAt(from,to);
+    }
 }

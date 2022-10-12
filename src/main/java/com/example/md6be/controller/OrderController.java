@@ -240,4 +240,14 @@ public class OrderController {
     private ResponseEntity<List<OrderDetail>> findAllOrderDetailByOrderId(@PathVariable("id") Long id){
         return new ResponseEntity<>(orderDetailService.findOrderDetailByOrderId(id),HttpStatus.OK);
     }
+    @GetMapping("/find-order-paid-by-customer/{id}")
+    private ResponseEntity<List<Order>> findAllOrderPaidByCustomer(@PathVariable("id") Long id){
+        return new ResponseEntity<>(orderService.findPaidOrdersByCustomerId(id),HttpStatus.OK);
+    }
+
+    @GetMapping("/find-order-create-at-by-customer/{from}/{to}")
+    private ResponseEntity<List<Order>> findAllOrderByCreateAt(@PathVariable("from") String from, @PathVariable("to") String to ){
+        return new ResponseEntity<>(orderService.findOrderByCreateAt(from,to),HttpStatus.OK);
+    }
+
 }

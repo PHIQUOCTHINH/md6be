@@ -59,6 +59,8 @@ public interface IOrderRepository extends JpaRepository<Order,Long> {
     @Query(nativeQuery = true, value = "SELECT * FROM md6_case.orders where customer_id =(select id from customer where user_id = :id) and is_accept =1 and is_paid = 0;")
     List<Order> findAcceptedOrdersByCustomerId (@Param("id") Long id);
 
-
-
+    @Query(nativeQuery = true, value = "SELECT * FROM md6_case.orders where customer_id =(select id from customer where user_id = :id) and is_accept =1 and is_paid = 1;")
+    List<Order> findPaidOrdersByCustomerId (@Param("id") Long id);
+    @Query(nativeQuery = true, value = "select*from orders where create_at BETWEEN ?1 AND ?2 ")
+    List<Order> findOrderByCreateAt(String from,String to);
 }

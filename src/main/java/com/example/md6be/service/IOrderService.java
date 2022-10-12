@@ -4,6 +4,7 @@ import com.example.md6be.model.Merchant;
 import com.example.md6be.model.Order;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
@@ -45,4 +46,6 @@ public interface IOrderService {
     List<Order> findOrderByPhoneNumber(String phoneNumber);
 
     List<Order> findOrderByNameCustomer(Long id,String name);
+    List<Order> findPaidOrdersByCustomerId (Long id);
+    List<Order> findOrderByCreateAt(String from,String to);
 }
