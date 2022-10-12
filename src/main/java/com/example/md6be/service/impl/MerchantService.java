@@ -78,6 +78,16 @@ public class MerchantService implements IMerchantService {
         return merchantRepository.findByPhone( numberPhone);
     }
 
+    @Override
+    public List<Merchant> findAll() {
+        return merchantRepository.findAll();
+    }
+
+    @Override
+    public List<Merchant> findMerchantByAddress(String name) {
+        return merchantRepository.findMerchantByAddress(  name );
+    }
+
     public Merchant findByAppUserId(Long id){
         return merchantRepository.findByAppUserId(id);
     }

@@ -4,6 +4,7 @@ import com.example.md6be.model.AppUser;
 import com.example.md6be.model.Merchant;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,5 +24,6 @@ public interface IMerchantService {
     public List<Merchant> filterMerchantByNameUp();
     List<Merchant> findAllMerchant();
     List<Merchant> findMerchantByPhoneNumber(String numberPhone);
-
+    List<Merchant> findAll();
+    List<Merchant> findMerchantByAddress(@Param("name") String name);
 }

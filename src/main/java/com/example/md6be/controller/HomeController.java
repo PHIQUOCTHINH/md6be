@@ -69,15 +69,19 @@ public class HomeController {
     }
     @GetMapping("/merchant")
     public ResponseEntity<List<Merchant>> findAllMerchant(){
-        List<Merchant> merchant = merchantService.findAllMerchant();
+        List<Merchant> merchant = merchantService.findAll();
         return new ResponseEntity<>(merchant, HttpStatus.OK);
     }
 
     @GetMapping("/foods/{id}")
-    public ResponseEntity<List<Food>> findAllByMerchant(@PathVariable Long idMerchant){
-        Merchant merchant = merchantService.findMerchantById(idMerchant);
+    public ResponseEntity<List<Food>> findAllByMerchant(@PathVariable Long id){
+        Merchant merchant = merchantService.findMerchantById(id);
         List<Food> foods = foodService.findAllByMerchant(merchant) ;
         return new ResponseEntity<>(foods, HttpStatus.OK);
     }
-
+    @GetMapping("/find-by-address/{address}")
+    public ResponseEntity<List<Merchant>> findMerchantByAddress(@PathVariable String address){
+        List<Merchant> list = merchantService.findMerchantByAddress("%" +address +"%");
+        return new ResponseEntity<>(list,HttpStatus.OK);
+    }
 }

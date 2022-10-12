@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
@@ -14,7 +15,8 @@ import java.util.List;
 @Repository
 @Transactional
 public interface IMerchantRepository extends JpaRepository<Merchant,Long> {
-    Page<Merchant> findAll(Pageable pageable);
+    @Query(nativeQuery = true, value = "SELECT * FROM merchant where merchant.is_accept = true and merchant.is_active = true")
+     List<Merchant> findAll();
     @Query(nativeQuery = true, value = "select * from merchant where is_accept = false;")
     List<Merchant> getWaitingAcceptMerchant();
 
@@ -38,4 +40,6 @@ public interface IMerchantRepository extends JpaRepository<Merchant,Long> {
     Merchant findByAppUserId(Long id);
     @Query(nativeQuery = true, value = "select * from merchant where phone_number like ?1")
     List<Merchant> findByPhone(String numberPhone);
+    @Query(nativeQuery = true, value = "select * from merchant where merchant.is_accept = 1 and merchant.is_active = 1 and merchant.address like :name")
+    List<Merchant> findMerchantByAddress(@Param("name") String name);
 }
