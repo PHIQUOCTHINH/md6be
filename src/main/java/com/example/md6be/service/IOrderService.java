@@ -2,6 +2,7 @@ package com.example.md6be.service;
 
 import com.example.md6be.model.Merchant;
 import com.example.md6be.model.Order;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -45,4 +46,7 @@ public interface IOrderService {
 
     List<Order> findOrderByNameCustomer(Long id,String name);
     List<Order> findWaitingOrdersByCustomerId (Long idCustomer);
+    List<Order> findPaidOrdersByCustomerId (@Param("id") Long id);
+    List<Order> findOrderByCreateAt(String from,String to);
+
 }

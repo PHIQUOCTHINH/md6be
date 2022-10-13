@@ -165,11 +165,11 @@ public class OrderController {
 
 
     @GetMapping("/cancel-order/{id}")
-    private ResponseEntity<?> cancelOrder(@PathVariable Long id ){
+    private ResponseEntity<String> cancelOrder(@PathVariable Long id ){
         List<OrderDetail> orderDetailList = orderDetailService.findOrderDetailByOrderId(id);
         orderDetailService.deleteByOrderId(orderDetailList);
         orderService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("Đã bị hủy",HttpStatus.OK);
     }
 
     @GetMapping("/find-order-by-customer/{id}")
@@ -195,7 +195,20 @@ public class OrderController {
         return new ResponseEntity<>(orderDetailService.findOrderDetailByOrderId(id),HttpStatus.OK);
     }
 
+    @GetMapping("/find-order-paid-by-customer/{id}")
+    private ResponseEntity<List<Order>> findAllOrderPaidByCustomer(@PathVariable("id") Long id){
+        return new ResponseEntity<>(orderService.findPaidOrdersByCustomerId(id),HttpStatus.OK);
+    }
+    @GetMapping("/find-order-create-at-by-customer/{from}/{to}")
+    private ResponseEntity<?> findAllOrderByCreateAt(@PathVariable("from") String from, @PathVariable("to") String to ){
+        List<Order> orders = orderService.findOrderByCreateAt(from,to);
+        double total = 0;
+        for (Order o : orders) {
+            total+= o.getPriceTotal();
+        }
 
+        return new ResponseEntity<>(total,HttpStatus.OK);
+    }
 }
 
 
