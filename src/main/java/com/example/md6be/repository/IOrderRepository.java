@@ -30,7 +30,7 @@ public interface IOrderRepository extends JpaRepository<Order,Long> {
     @Query(nativeQuery = true, value = "update md6_case.orders set orders.order_status_id = 2 where orders.id =:idOrder")
     void confirmOrder(Long idOrder);
 
-    @Query(nativeQuery = true, value = "select*from orders where merchant_id in (select merchant.id from merchant where user_id =:id)")
+    @Query(nativeQuery = true, value = "select*from orders where merchant_id in (select merchant.id from merchant where user_id =:id) order by create_at DESC")
     List<Order> findOrdersByUserId(@Param("id") Long id);
 
     List<Order> findOrderByCustomerId(Long id);
@@ -64,4 +64,6 @@ public interface IOrderRepository extends JpaRepository<Order,Long> {
     List<Order> findPaidOrdersByCustomerId (@Param("id") Long id);
     @Query(nativeQuery = true, value = "select*from orders where create_at BETWEEN ?1 AND ?2 ")
     List<Order> findOrderByCreateAt(String from,String to);
+    @Query(nativeQuery = true, value = "SELECT * FROM md6_case.orders where merchant_id =(select id from merchant where user_id = :id) and is_accept =1 and is_paid = 1;")
+    List<Order> findAllPaidOrders(@Param("id") Long id);
 }

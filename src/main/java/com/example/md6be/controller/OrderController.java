@@ -195,10 +195,10 @@ public class OrderController {
         return new ResponseEntity<>(orderDetailService.findOrderDetailByOrderId(id),HttpStatus.OK);
     }
 
-    @GetMapping("/find-order-paid-by-customer/{id}")
-    private ResponseEntity<List<Order>> findAllOrderPaidByCustomer(@PathVariable("id") Long id){
-        return new ResponseEntity<>(orderService.findPaidOrdersByCustomerId(id),HttpStatus.OK);
-    }
+//    @GetMapping("/find-order-paid-by-customer/{id}")
+//    private ResponseEntity<List<Order>> findAllOrderPaidByCustomer(@PathVariable("id") Long id){
+//        return new ResponseEntity<>(orderService.findPaidOrdersByCustomerId(id),HttpStatus.OK);
+//    }
     @GetMapping("/find-order-create-at-by-customer/{from}/{to}")
     private ResponseEntity<?> findAllOrderByCreateAt(@PathVariable("from") String from, @PathVariable("to") String to ){
         List<Order> orders = orderService.findOrderByCreateAt(from,to);
@@ -208,6 +208,19 @@ public class OrderController {
         }
 
         return new ResponseEntity<>(total,HttpStatus.OK);
+    }
+    @GetMapping("/find-order-paid-by-customer/{id}")
+    private ResponseEntity<List<Order>> findAllOrderPaidByCustomer(@PathVariable("id") Long id){
+        return new ResponseEntity<>(orderService.findPaidOrdersByCustomerId(id),HttpStatus.OK);
+    }
+    @GetMapping("/find-all-order-paid/{id}")
+    private ResponseEntity<?> findAllOrderPaid(@PathVariable("id") Long id){
+        List<Order> orders = orderService.findAllPaidOrders(id);
+        double totalPrice = 0;
+        for (Order order : orders) {
+            totalPrice += order.getPriceTotal();
+        }
+        return new ResponseEntity<>(totalPrice,HttpStatus.OK);
     }
 }
 

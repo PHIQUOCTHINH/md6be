@@ -22,6 +22,8 @@ public class Merchant {
     private String avatar;
     @Lob
     private String imageBanner;
+    @Lob
+    private String description;
     @NotBlank
     private String address;
 

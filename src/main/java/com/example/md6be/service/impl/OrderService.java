@@ -115,4 +115,9 @@ public class OrderService implements IOrderService {
     public List<Order>findOrderByCreateAt(String from,String to){
         return orderRepository.findOrderByCreateAt(from,to);
     }
+
+    @Override
+    public List<Order> findAllPaidOrders(Long id) {
+        return orderRepository.findAllPaidOrders(id);
+    }
 }
